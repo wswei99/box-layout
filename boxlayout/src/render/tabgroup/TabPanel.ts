@@ -1,5 +1,8 @@
 /// <reference path="../../data/EventDispatcher.ts" />
 namespace boxlayout {
+    /**
+     * @author 杨宁
+     */
     export class TabPanel extends boxlayout_event.EventDispatcher implements ITabPanel {
         constructor() {
             super();

@@ -2,6 +2,7 @@
 namespace boxlayout {
     /**
      * TabPanel焦点管理器
+     * @author 杨宁
      */
     export class TabPanelFocusManager extends boxlayout_event.EventDispatcher {
         private static instance: TabPanelFocusManager;

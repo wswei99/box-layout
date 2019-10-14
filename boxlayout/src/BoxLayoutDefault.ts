@@ -7,7 +7,7 @@ namespace boxlayout {
         public unSerialize(ownerLayout: BoxLayout, panelInfo: { panelID: string, closeable: boolean }): ITabPanel {
             let panel = ownerLayout.getRegistPanelById(panelInfo.panelID);
             if (!panel) {
-                throw new Error("ID为 " + panelInfo + " 的面板未注册");
+                throw new Error("ID为 " + panelInfo.panelID + " 的面板未注册");
             }
             panel.closeable=panelInfo.closeable;
             return panel;

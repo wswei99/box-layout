@@ -11,7 +11,7 @@ namespace boxlayout {
     export type Position = "left" | "right" | "top" | "bottom";
     /**
      * 盒式布局，此容器作为盒式布局的根，可将盒式布局应用在任意指定区域
-     * @author yangning
+     * @author 杨宁
      */
     export class BoxLayout extends boxlayout_event.EventDispatcher {
         private dragAreaElement: DragArea;
@@ -604,9 +604,7 @@ namespace boxlayout {
         ////
         ////
         private panelDic: any = {};
-        /**注册面板
-         * 与面板ID相关的api会用到注册信息
-         */
+        /**注册面板(与面板ID相关的api会用到注册信息)*/
         public registPanel(panel: ITabPanel): void {
             this.panelDic[panel.id] = panel;
         }
@@ -823,8 +821,8 @@ namespace boxlayout {
         ///////
 
         /**
-         * 根据布局配置立刻重新布局所有元素
-         * @param config 
+         * 应用布局
+         * @param config 布局数据
          */
         public applyLayoutConfig(config: any): void {
             let needRemoveList: ITabPanel[] = [];

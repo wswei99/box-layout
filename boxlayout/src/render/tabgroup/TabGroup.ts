@@ -1,6 +1,9 @@
 /// <reference path="../../data/DragInfo.ts" />
 /// <reference path="../../data/EventDispatcher.ts" />
 namespace boxlayout {
+    /**
+     * @author 杨宁
+     */
     export class TabGroup extends boxlayout_event.EventDispatcher implements IDragRender {
         constructor() {
             super();

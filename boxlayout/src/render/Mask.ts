@@ -1,4 +1,8 @@
 namespace boxlayout{
+    /**
+     * 蒙版对象
+     * @author 杨宁
+     */
     export class Mask implements IRender{
         constructor(){
             this._root=document.createElement('div');

@@ -1,5 +1,8 @@
 namespace boxlayout{
-
+    /**
+     * 矩阵工具类
+     * @author 杨宁
+     */
     export class MatrixUtil {
         /**将一个标签的本地坐标转换为相对于body的坐标 */
         public static localToGlobal(target: HTMLElement, p: Point): Point {
@@ -111,10 +114,18 @@ namespace boxlayout{
         private static transformValues(args: any[]): void {
             for (let i: number = 0; i < args.length; i++) {
                 if (args[i].indexOf('px') !== -1) {
-                    args[i] = args[i].substring(0, args[i].indexOf('px') - 1);
+                    args[i] = args[i].substring(0, args[i].indexOf('px'));
                 }
-                if (args[i].indexOf('deg') !== -1) {
-                    args[i] = args[i].substring(0, args[i].indexOf('deg') - 1);
+                else if (args[i].indexOf('deg') !== -1) {
+                    //角度
+                    args[i] = args[i].substring(0, args[i].indexOf('deg'));
+                    //转换成弧度
+                    args[i] = Number(args[i].toString().trim());
+                    args[i]=args[i]/(180/Math.PI);
+                }
+                else if (args[i].indexOf('rad') !== -1) {
+                    //弧度
+                    args[i] = args[i].substring(0, args[i].indexOf('rad'));
                 }
                 args[i] = Number(args[i].toString().trim());
             }

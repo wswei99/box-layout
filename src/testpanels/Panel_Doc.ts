@@ -1,35 +1,30 @@
-export class LiSi extends boxlayout.TabPanel {
+export class Panel_Doc extends boxlayout.TabPanel {
+    public static ID='Panel_Doc'
     private headerRender: HeaderRender;
     constructor() {
         super();
-        this.id=('lisi');
-        this.title=('我是李四');
+        this.id=Panel_Doc.ID;
+        this.title=Panel_Doc.ID;
         this.icon=require("../assets/icon.svg");
         this.headerRender = new HeaderRender();
         this.headerRender.root.addEventListener('click', () => {
-            this.element.innerText = this.element.innerText + "\n我是李四!";
+            let input=document.createElement('input');
+            this.element.appendChild(input);
         });
-        this.minHeight=this.minWidth=200;
     }
     private element: HTMLDivElement;
-    //重写 以实现自定义面板
+    //重写 以实现自定义内容
     protected renderContent(container: HTMLElement): void {
-        let div=document.createElement('div');
-        div.innerText='aaaaaaaaaa';
-        div.draggable=true;
-        div.ondragstart=(e)=>{
-        }
-        container.appendChild(div);
-
-        container.ondragover=(e)=>{
-            e.dataTransfer.dropEffect='copy';
-            e.preventDefault();
-        }
+        this.element = document.createElement('div');
+        this.element.style.background="#2b2b2b"
+        this.element.style.color = "#ffffff";
+        container.appendChild(this.element);
     }
     //重写 以实现选项卡头部自定义内容
     public getToolsRender(): boxlayout.IRender {
         return this.headerRender;
     }
+    
     //重写 做相关处理
     protected resize(newWidth: number, newHeight: number): void {
         if (this.element) {
@@ -41,13 +36,13 @@ export class LiSi extends boxlayout.TabPanel {
 /**测试选项卡头部渲染器 */
 export class HeaderRender implements boxlayout.IRender {
     public root: HTMLButtonElement;
-    
-    public minHeight:number=0;
-    public minWidth:number=0;
     constructor() {
         this.root = document.createElement('button');
         this.root.textContent = "click me";
     }
+    
+    public minHeight:number=0;
+    public minWidth:number=0;
     private container: HTMLElement;
     render(container: HTMLElement): void {
         this.container = container;

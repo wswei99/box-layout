@@ -23,7 +23,7 @@ declare namespace boxlayout {
     type Position = "left" | "right" | "top" | "bottom";
     /**
      * 盒式布局，此容器作为盒式布局的根，可将盒式布局应用在任意指定区域
-     * @author yangning
+     * @author 杨宁
      */
     class BoxLayout extends boxlayout_event.EventDispatcher {
         private dragAreaElement;
@@ -125,9 +125,7 @@ declare namespace boxlayout {
         createDocumentElement(): DocumentElement;
         private _createDocumentElement;
         private panelDic;
-        /**注册面板
-         * 与面板ID相关的api会用到注册信息
-         */
+        /**注册面板(与面板ID相关的api会用到注册信息)*/
         registPanel(panel: ITabPanel): void;
         /**根据ID获取一个已注册的面板 */
         getRegistPanelById(id: string): ITabPanel;
@@ -172,8 +170,8 @@ declare namespace boxlayout {
          */
         private focusHandler;
         /**
-         * 根据布局配置立刻重新布局所有元素
-         * @param config
+         * 应用布局
+         * @param config 布局数据
          */
         applyLayoutConfig(config: any): void;
         private getAllPanel;
@@ -238,6 +236,9 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * @author 杨宁
+     */
     class TabPanel extends boxlayout_event.EventDispatcher implements ITabPanel {
         constructor();
         private _minWidth;
@@ -556,6 +557,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 拖拽区域标记
+     * @author 杨宁
+     */
     class DragArea implements IRender {
         constructor();
         minHeight: number;
@@ -569,6 +574,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 蒙版对象
+     * @author 杨宁
+     */
     class Mask implements IRender {
         constructor();
         minHeight: number;
@@ -582,7 +591,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
-    /**分割条 */
+    /**
+     * 分割条
+     * @author 杨宁
+     * */
     class Separator implements IRender {
         constructor();
         minHeight: number;
@@ -596,6 +608,9 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * @author 杨宁
+     */
     class TabBar extends boxlayout_event.EventDispatcher implements IRender {
         constructor();
         minHeight: number;
@@ -638,6 +653,9 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * @author 杨宁
+     */
     class TabGroup extends boxlayout_event.EventDispatcher implements IDragRender {
         constructor();
         minWidth: number;
@@ -699,6 +717,7 @@ declare namespace boxlayout {
 declare namespace boxlayout {
     /**
      * TabPanel焦点管理器
+     * @author 杨宁
      */
     class TabPanelFocusManager extends boxlayout_event.EventDispatcher {
         private static instance;
@@ -713,6 +732,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 默认标题呈现器
+     * @author 杨宁
+     */
     class DefaultTitleRender implements ITitleRender {
         private titleElement;
         private iconElement;
@@ -743,37 +766,72 @@ declare namespace boxlayout {
         };
         setBounds(x: number, y: number, width: number, height: number): void;
     }
+    /**
+     * 默认标题呈现器工厂
+     * @author 杨宁
+     */
     class DefaultTitleRenderFactory implements ITitleRenderFactory {
         createTitleRender(): ITitleRender;
     }
 }
 declare namespace boxlayout {
+    /**
+     * 面板接口
+     * @author 杨宁
+     */
     interface ITabPanel extends IRender, boxlayout_event.IEventDispatcher {
+        /**面板id */
         id: string;
+        /**面板标题 */
         title: string;
+        /**面板图标 */
         icon: string;
+        /**是否可关闭 */
         closeable: boolean;
+        /**所属的容器 */
         ownerGroup: TabGroup;
+        /**所属的布局 */
         ownerLayout: BoxLayout;
+        /**布局权重 值越大越优先调整尺寸 */
         priorityLevel: number;
+        /**获取工具栏对象 */
         getToolsRender(): IRender;
     }
+    /**
+     * 标题呈现器接口
+     * @author 杨宁
+     */
     interface ITitleRender extends IRender {
+        /**对应的面板 */
         panel: ITabPanel;
+        /**是否选中 */
         selected: boolean;
+        /**获取视图绑定信息 */
         getBounds(): {
             x: number;
             y: number;
             width: number;
             height: number;
         };
+        /**更新视图 */
         updateDisplay(): void;
     }
+    /**
+     * 标题呈现器工厂接口
+     * @author 杨宁
+     */
     interface ITitleRenderFactory {
+        /**
+         * 创建一个呈现器实例
+         */
         createTitleRender(): ITitleRender;
     }
 }
 declare namespace boxlayout {
+    /**
+     * 测试拖拽面板
+     * @author 杨宁
+     * */
     class TestDragPanel extends boxlayout_event.EventDispatcher implements IDragRender {
         constructor();
         minHeight: number;
@@ -796,7 +854,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
-    /**测试TabPanel */
+    /**
+     * 测试TabPanel
+     * @author 杨宁
+     *  */
     class TestTabPanel extends TabPanel {
         private headerRender;
         constructor();
@@ -818,6 +879,9 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * @author 杨宁
+     */
     class HtmlElementResizeHelper {
         private static listenList;
         /**
@@ -832,6 +896,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 矩阵工具类
+     * @author 杨宁
+     */
     class MatrixUtil {
         /**将一个标签的本地坐标转换为相对于body的坐标 */
         static localToGlobal(target: HTMLElement, p: Point): Point;
@@ -857,9 +925,19 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 弹出菜单
+     * @author 杨宁
+     */
     class PopupMenu {
         constructor();
         private static instance;
+        /**
+         * 弹出菜单
+         * @param target 要弹出菜单的目标对象
+         * @param menus 菜单数据
+         * @param callback 回调
+         */
         static popup(target: HTMLElement, menus: any[], callback: (id: string) => void): void;
         private menuContainer;
         private callback;

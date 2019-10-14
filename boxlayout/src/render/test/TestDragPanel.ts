@@ -1,7 +1,10 @@
 /// <reference path="../../data/DragInfo.ts" />
 /// <reference path="../../data/EventDispatcher.ts" />
 namespace boxlayout {
-    //测试拖拽面板
+    /**
+     * 测试拖拽面板
+     * @author 杨宁
+     * */
     export class TestDragPanel extends boxlayout_event.EventDispatcher implements IDragRender {
         constructor() {
             super();

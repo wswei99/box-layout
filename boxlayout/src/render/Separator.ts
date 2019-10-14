@@ -1,5 +1,8 @@
 namespace boxlayout{
-    /**分割条 */
+    /**
+     * 分割条
+     * @author 杨宁
+     * */
     export class Separator implements IRender{
         constructor(){
             this._root=document.createElement('div');

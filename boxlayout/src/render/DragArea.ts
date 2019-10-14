@@ -1,4 +1,8 @@
 namespace boxlayout{
+    /**
+     * 拖拽区域标记
+     * @author 杨宁
+     */
     export class DragArea implements IRender{
         constructor(){
             this._root=document.createElement('div');

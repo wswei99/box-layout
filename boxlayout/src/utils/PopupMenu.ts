@@ -1,10 +1,20 @@
 namespace boxlayout {
+    /**
+     * 弹出菜单
+     * @author 杨宁
+     */
     export class PopupMenu {
         constructor() {
             this.mouseEventHandle = this.mouseEventHandle.bind(this);
             this.itemHandle = this.itemHandle.bind(this);
         }
         private static instance: PopupMenu;
+        /**
+         * 弹出菜单
+         * @param target 要弹出菜单的目标对象
+         * @param menus 菜单数据
+         * @param callback 回调
+         */
         public static popup(target: HTMLElement, menus: any[], callback: (id: string) => void): void {
             if (!this.instance) {
                 this.instance = new PopupMenu();

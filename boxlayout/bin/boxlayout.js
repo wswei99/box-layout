@@ -93,7 +93,7 @@ var boxlayout;
 (function (boxlayout) {
     /**
      * 盒式布局，此容器作为盒式布局的根，可将盒式布局应用在任意指定区域
-     * @author yangning
+     * @author 杨宁
      */
     var BoxLayout = /** @class */ (function (_super) {
         __extends(BoxLayout, _super);
@@ -686,9 +686,7 @@ var boxlayout;
             layout.addBoxElementToRoot(new boxlayout.BoxLayoutElement());
             return element;
         };
-        /**注册面板
-         * 与面板ID相关的api会用到注册信息
-         */
+        /**注册面板(与面板ID相关的api会用到注册信息)*/
         BoxLayout.prototype.registPanel = function (panel) {
             this.panelDic[panel.id] = panel;
         };
@@ -909,8 +907,8 @@ var boxlayout;
         ///////
         ///////
         /**
-         * 根据布局配置立刻重新布局所有元素
-         * @param config
+         * 应用布局
+         * @param config 布局数据
          */
         BoxLayout.prototype.applyLayoutConfig = function (config) {
             var _this = this;
@@ -1335,6 +1333,9 @@ var boxlayout;
 /// <reference path="../../data/EventDispatcher.ts" />
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * @author 杨宁
+     */
     var TabPanel = /** @class */ (function (_super) {
         __extends(TabPanel, _super);
         function TabPanel() {
@@ -1534,7 +1535,7 @@ var boxlayout;
         DefaultPanelSerialize.prototype.unSerialize = function (ownerLayout, panelInfo) {
             var panel = ownerLayout.getRegistPanelById(panelInfo.panelID);
             if (!panel) {
-                throw new Error("ID为 " + panelInfo + " 的面板未注册");
+                throw new Error("ID为 " + panelInfo.panelID + " 的面板未注册");
             }
             panel.closeable = panelInfo.closeable;
             return panel;
@@ -2344,6 +2345,10 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 拖拽区域标记
+     * @author 杨宁
+     */
     var DragArea = /** @class */ (function () {
         function DragArea() {
             this.minHeight = 0;
@@ -2382,6 +2387,10 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 蒙版对象
+     * @author 杨宁
+     */
     var Mask = /** @class */ (function () {
         function Mask() {
             this.minHeight = 0;
@@ -2419,7 +2428,10 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
-    /**分割条 */
+    /**
+     * 分割条
+     * @author 杨宁
+     * */
     var Separator = /** @class */ (function () {
         function Separator() {
             this.minHeight = 0;
@@ -2458,6 +2470,9 @@ var boxlayout;
 /// <reference path="../../data/EventDispatcher.ts" />
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * @author 杨宁
+     */
     var TabBar = /** @class */ (function (_super) {
         __extends(TabBar, _super);
         function TabBar() {
@@ -2662,6 +2677,9 @@ var boxlayout;
 /// <reference path="../../data/EventDispatcher.ts" />
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * @author 杨宁
+     */
     var TabGroup = /** @class */ (function (_super) {
         __extends(TabGroup, _super);
         function TabGroup() {
@@ -3229,6 +3247,7 @@ var boxlayout;
 (function (boxlayout) {
     /**
      * TabPanel焦点管理器
+     * @author 杨宁
      */
     var TabPanelFocusManager = /** @class */ (function (_super) {
         __extends(TabPanelFocusManager, _super);
@@ -3312,6 +3331,10 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 默认标题呈现器
+     * @author 杨宁
+     */
     var DefaultTitleRender = /** @class */ (function () {
         function DefaultTitleRender() {
             var _this = this;
@@ -3337,6 +3360,7 @@ var boxlayout;
             this._root.appendChild(this.titleElement);
             this.closeBtn = document.createElement('a');
             this.closeBtn.style.width = '20px';
+            this.closeBtn.style.height = '100%';
             this.closeBtn.style.cursor = 'pointer';
             this.closeBtn.style.background = "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='3 3 16 16'%3E%3Cpath fill='%23c0c0c0' d='M12.597 11.042l2.803 2.803-1.556 1.555-2.802-2.802L8.239 15.4l-1.556-1.555 2.802-2.803-2.802-2.803 1.555-1.556 2.804 2.803 2.803-2.803L15.4 8.239z'/%3E%3C/svg%3E\") 50% no-repeat";
             this.root.appendChild(this.closeBtn);
@@ -3416,11 +3440,14 @@ var boxlayout;
             this.bw = width;
             this.bh = height;
             this.root.style.height = height + "px";
-            this.titleElement.style.lineHeight = height + "px";
         };
         return DefaultTitleRender;
     }());
     boxlayout.DefaultTitleRender = DefaultTitleRender;
+    /**
+     * 默认标题呈现器工厂
+     * @author 杨宁
+     */
     var DefaultTitleRenderFactory = /** @class */ (function () {
         function DefaultTitleRenderFactory() {
         }
@@ -3435,7 +3462,10 @@ var boxlayout;
 /// <reference path="../../data/EventDispatcher.ts" />
 var boxlayout;
 (function (boxlayout) {
-    //测试拖拽面板
+    /**
+     * 测试拖拽面板
+     * @author 杨宁
+     * */
     var TestDragPanel = /** @class */ (function (_super) {
         __extends(TestDragPanel, _super);
         function TestDragPanel() {
@@ -3589,7 +3619,10 @@ var boxlayout;
 /// <reference path="../tabgroup/TabPanel.ts" />
 var boxlayout;
 (function (boxlayout) {
-    /**测试TabPanel */
+    /**
+     * 测试TabPanel
+     * @author 杨宁
+     *  */
     var TestTabPanel = /** @class */ (function (_super) {
         __extends(TestTabPanel, _super);
         function TestTabPanel() {
@@ -3649,6 +3682,9 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * @author 杨宁
+     */
     var HtmlElementResizeHelper = /** @class */ (function () {
         function HtmlElementResizeHelper() {
         }
@@ -3694,6 +3730,10 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 矩阵工具类
+     * @author 杨宁
+     */
     var MatrixUtil = /** @class */ (function () {
         function MatrixUtil() {
         }
@@ -3803,10 +3843,18 @@ var boxlayout;
         MatrixUtil.transformValues = function (args) {
             for (var i = 0; i < args.length; i++) {
                 if (args[i].indexOf('px') !== -1) {
-                    args[i] = args[i].substring(0, args[i].indexOf('px') - 1);
+                    args[i] = args[i].substring(0, args[i].indexOf('px'));
                 }
-                if (args[i].indexOf('deg') !== -1) {
-                    args[i] = args[i].substring(0, args[i].indexOf('deg') - 1);
+                else if (args[i].indexOf('deg') !== -1) {
+                    //角度
+                    args[i] = args[i].substring(0, args[i].indexOf('deg'));
+                    //转换成弧度
+                    args[i] = Number(args[i].toString().trim());
+                    args[i] = args[i] / (180 / Math.PI);
+                }
+                else if (args[i].indexOf('rad') !== -1) {
+                    //弧度
+                    args[i] = args[i].substring(0, args[i].indexOf('rad'));
                 }
                 args[i] = Number(args[i].toString().trim());
             }
@@ -3898,11 +3946,21 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 弹出菜单
+     * @author 杨宁
+     */
     var PopupMenu = /** @class */ (function () {
         function PopupMenu() {
             this.mouseEventHandle = this.mouseEventHandle.bind(this);
             this.itemHandle = this.itemHandle.bind(this);
         }
+        /**
+         * 弹出菜单
+         * @param target 要弹出菜单的目标对象
+         * @param menus 菜单数据
+         * @param callback 回调
+         */
         PopupMenu.popup = function (target, menus, callback) {
             if (!this.instance) {
                 this.instance = new PopupMenu();

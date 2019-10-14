@@ -25,6 +25,8 @@
 .title-item{
     border-right: 1px solid #282828;
     background-color: #3b3b3b;
+    display: flex;
+    align-items: center;
 }
 /**面板标题栏标题项：焦点*/
 .title-item.focus{
@@ -39,7 +41,7 @@
 
 /**面板标题栏标题字体*/
 .title-font{
-    font-size: 13px;
+    font-size: 12px;
     color:#888888
 }
 /**面板标题栏标题字体：焦点*/

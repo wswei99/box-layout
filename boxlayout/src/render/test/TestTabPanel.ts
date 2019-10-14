@@ -1,6 +1,9 @@
 /// <reference path="../tabgroup/TabPanel.ts" />
 namespace boxlayout {
-    /**测试TabPanel */
+    /**
+     * 测试TabPanel
+     * @author 杨宁
+     *  */
     export class TestTabPanel extends TabPanel {
         private headerRender: HeaderRender;
         constructor() {

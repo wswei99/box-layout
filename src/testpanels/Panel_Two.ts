@@ -1,26 +1,26 @@
-export class ZhaoLiu extends boxlayout.TabPanel {
+export class Panel_Two extends boxlayout.TabPanel {
+    public static ID='Panel_Two';
     private headerRender: HeaderRender;
     constructor() {
         super();
-        this.id=('zhaoliu');
-        this.title=('我是牛逼的赵六');
-        this.priorityLevel=1;
-        // this.icon=require("../assets/icon.svg");
+        this.id=Panel_Two.ID;
+        this.title=Panel_Two.ID;
+        this.icon=require("../assets/icon.svg");
         this.headerRender = new HeaderRender();
         this.headerRender.root.addEventListener('click', () => {
-            this.element.innerText = this.element.innerText + "\n我最吊!";
+            this.element.innerText = this.element.innerText + `\n${Panel_Two}`;
         });
         
-        this.minHeight=this.minWidth=150;
+        this.minHeight=this.minWidth=200;
     }
-    private element: HTMLDivElement;
-    //重写 以实现自定义面板
+    private element: HTMLIFrameElement;
+    //重写 以实现自定义内容
     protected renderContent(container: HTMLElement): void {
-        console.log(this.title);
-        this.element = document.createElement('div');
+        // this.element = document.createElement('iframe');
+        // this.element.src = "http://gc.hgame.com/home/game/appid/100389/gameid/100416/sr/2/pt/179";
         // this.element.style.background="#666666"
-        this.element.style.color = "#ffffff";
-        container.appendChild(this.element);
+        // this.element.style.color="#ffffff";
+        // container.appendChild(this.element);
     }
     //重写 以实现选项卡头部自定义内容
     public getToolsRender(): boxlayout.IRender {
@@ -40,8 +40,7 @@ export class HeaderRender implements boxlayout.IRender {
     constructor() {
         this.root = document.createElement('button');
         this.root.textContent = "click me";
-    } 
-    
+    }
     public minHeight:number=0;
     public minWidth:number=0;
     private container: HTMLElement;

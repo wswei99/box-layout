@@ -1,4 +1,8 @@
 namespace boxlayout {
+    /**
+     * 默认标题呈现器
+     * @author 杨宁
+     */
     export class DefaultTitleRender implements ITitleRender {
         private titleElement: HTMLDivElement;
         private iconElement: HTMLImageElement;
@@ -23,6 +27,7 @@ namespace boxlayout {
             this._root.appendChild(this.titleElement);
             this.closeBtn = document.createElement('a');
             this.closeBtn.style.width = '20px';
+            this.closeBtn.style.height = '100%';
             this.closeBtn.style.cursor = 'pointer';
             this.closeBtn.style.background = `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='3 3 16 16'%3E%3Cpath fill='%23c0c0c0' d='M12.597 11.042l2.803 2.803-1.556 1.555-2.802-2.802L8.239 15.4l-1.556-1.555 2.802-2.803-2.802-2.803 1.555-1.556 2.804 2.803 2.803-2.803L15.4 8.239z'/%3E%3C/svg%3E") 50% no-repeat`;
             this.root.appendChild(this.closeBtn);
@@ -100,10 +105,12 @@ namespace boxlayout {
             this.bw = width;
             this.bh = height;
             this.root.style.height=height+"px";
-            this.titleElement.style.lineHeight = height + "px";
         }
     }
-
+    /**
+     * 默认标题呈现器工厂
+     * @author 杨宁
+     */
     export class DefaultTitleRenderFactory implements ITitleRenderFactory {
         createTitleRender(): ITitleRender {
             return new DefaultTitleRender();

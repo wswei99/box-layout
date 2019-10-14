@@ -2,8 +2,8 @@
   "name": "boxlayout_test",
   "version": "1.0.0",
   "scripts": {
-    "build": "webpack --config webpack.config.js --mode=development",
-    "watch": "webpack --config webpack.config.js --mode=development --watch"
+    "build-lib":"cd ./boxlayout && tsc",
+    "build": "npm run build-lib && webpack --config webpack.config.js --mode=development"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^2.0.2",
