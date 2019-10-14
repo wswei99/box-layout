@@ -1,0 +1,70 @@
+/**面板组之间的分割线*/
+.split-line{
+    background-color: #282828;
+}
+
+/**面板标题栏*/
+.title{
+    display: flex;
+    background-color: #3b3b3b;
+    border-bottom: 1px solid #282828;
+    box-sizing: border-box;
+}
+/**面板标题区**/
+.title-item-area{
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    height: calc(100% + 1px);
+}
+/**面板工具栏区**/
+.title-tools-area{
+    flex-shrink: 0;
+}
+/**面板标题栏标题项*/
+.title-item{
+    border-right: 1px solid #282828;
+    background-color: #3b3b3b;
+}
+/**面板标题栏标题项：焦点*/
+.title-item.focus{
+    background-color: #444444;
+    border-bottom: 1px solid #444444;
+}
+/**面板标题栏标题项：选中*/
+.title-item.selected{
+    background-color: #444444;
+    border-bottom: 1px solid #444444;
+}
+
+/**面板标题栏标题字体*/
+.title-font{
+    font-size: 13px;
+    color:#888888
+}
+/**面板标题栏标题字体：焦点*/
+.title-font.focus{
+    color:#f0f0f0
+}
+/**面板标题栏标题字体：选中*/
+.title-font.selected{
+    color:#f0f0f0
+}
+
+/**面板*/
+.panel{
+    background:#3b3b3b;
+    border: 2px solid #444444;
+    box-sizing: border-box;
+}
+/**面板：焦点*/
+.panel.focus{
+    border: 2px solid #505050;
+}
+
+/**拖拽标志*/
+.drag-element{
+    transition: linear 0.08s;
+    background: rgba(0,0,0,0.1);
+    border: 2px solid rgba(0, 184, 255, 0.26)
+}

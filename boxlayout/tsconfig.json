@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"watch": false,
+		"sourceMap": true,
+		"declaration": true,
+		"stripInternal": true,
+		"outFile": "bin/boxlayout.js"
+	},
+	"exclude": [
+		"bin"
+	]
+}

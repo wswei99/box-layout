@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"watch": false,
+		"sourceMap": true,
+		"outDir": "./out"
+	},
+	"exclude": [
+		"node_modules",
+		"out",
+		"boxlayout/src",
+		"xui/src"
+	]
+}
