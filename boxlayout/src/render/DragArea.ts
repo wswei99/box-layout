@@ -7,9 +7,6 @@ namespace boxlayout{
         constructor(){
             this._root=document.createElement('div');
             this._root.className='drag-element';
-            this._root.style.position = "absolute";
-            this._root.style.pointerEvents = "none";
-            this._root.style.boxSizing = "border-box";
         }
         public minHeight:number=0;
         public minWidth:number=0;

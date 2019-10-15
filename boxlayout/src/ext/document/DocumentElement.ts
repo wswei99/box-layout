@@ -3,6 +3,7 @@ namespace boxlayout {
      * 文档区元素
      * - 文档区元素是一个特殊的区域，其中嵌套了另一个boxLayout
      * 一个layout里面只允许有一个文档区，如果想使用文档区请通过BoxLayout的createDocumentElement来添加
+     * @author 杨宁
      */
     export class DocumentElement extends BoxLayoutElement {
         constructor() {

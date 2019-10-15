@@ -15,15 +15,15 @@ export class Panel_One extends boxlayout.TabPanel {
     private element: HTMLDivElement;
     //重写 以实现自定义面板
     protected renderContent(container: HTMLElement): void {
-        let div=document.createElement('div');
-        container.appendChild(div);
-        div.draggable=true;
-        div.ondragstart=(e)=>{
-        }
-        container.ondragover=(e)=>{
-            e.dataTransfer.dropEffect='copy';
-            e.preventDefault();
-        }
+        // let div=document.createElement('div');
+        // container.appendChild(div);
+        // div.draggable=true;
+        // div.ondragstart=(e)=>{
+        // }
+        // container.ondragover=(e)=>{
+        //     e.dataTransfer.dropEffect='copy';
+        //     e.preventDefault();
+        // }
     }
     //重写 以实现选项卡头部自定义内容
     public getToolsRender(): boxlayout.IRender {

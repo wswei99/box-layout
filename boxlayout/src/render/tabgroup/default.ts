@@ -4,32 +4,23 @@ namespace boxlayout {
      * @author 杨宁
      */
     export class DefaultTitleRender implements ITitleRender {
-        private titleElement: HTMLDivElement;
+        private titleElement: HTMLSpanElement;
         private iconElement: HTMLImageElement;
         private closeBtn:HTMLElement;
         constructor() {
             this._root = document.createElement('div');
             this._root.className = 'title-item';
-            this._root.style.overflow = "hidden";
-            this._root.style.display = "flex";
-            this._root.style.paddingLeft=this._root.style.paddingRight='6px';
+
             this.iconElement = document.createElement('img');
-            this.iconElement.style.marginRight = "6px";
-            this.iconElement.style.flexGrow = "1";
-            this.iconElement.style.pointerEvents = "none";
-            this.iconElement.style.alignSelf = 'center';
+            this.iconElement.className='title-icon';
             this._root.appendChild(this.iconElement);
-            this.titleElement = document.createElement('div');
+
+            this.titleElement = document.createElement('span');
             this.titleElement.className = 'title-font';
-            this.titleElement.style.whiteSpace = "nowrap";
-            this.titleElement.style.textOverflow = "ellipsis";
-            this.titleElement.style.overflow = "hidden";
             this._root.appendChild(this.titleElement);
+
             this.closeBtn = document.createElement('a');
-            this.closeBtn.style.width = '20px';
-            this.closeBtn.style.height = '100%';
-            this.closeBtn.style.cursor = 'pointer';
-            this.closeBtn.style.background = `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='3 3 16 16'%3E%3Cpath fill='%23c0c0c0' d='M12.597 11.042l2.803 2.803-1.556 1.555-2.802-2.802L8.239 15.4l-1.556-1.555 2.802-2.803-2.802-2.803 1.555-1.556 2.804 2.803 2.803-2.803L15.4 8.239z'/%3E%3C/svg%3E") 50% no-repeat`;
+            this.closeBtn.className='title-closebtn';
             this.root.appendChild(this.closeBtn);
             this.closeBtn.addEventListener('click', () => {
                 this.panel.ownerGroup.$execCommand('close');

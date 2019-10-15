@@ -8,9 +8,6 @@ namespace boxlayout {
             super();
             this._root = document.createElement('div');
             this._root.className = 'panel';
-            this._root.style.position = "absolute";
-            this._root.style.overflow = 'hidden';
-            this._root.style.outline = 'none';
             this._root.style.zIndex = '0';
             this._root.style.display = 'none';
             this._root.tabIndex = 0;

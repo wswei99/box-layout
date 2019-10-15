@@ -10,7 +10,6 @@ namespace boxlayout {
 
             this._root = document.createElement('div');
             this._root.className='title';
-            this._root.style.position = "absolute";
             this._root.style.zIndex = '1';
 
             this.itemContainer = document.createElement('div');

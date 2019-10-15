@@ -10,7 +10,7 @@ namespace boxlayout {
     ////5:maskElement
     export type Position = "left" | "right" | "top" | "bottom";
     /**
-     * 盒式布局，此容器作为盒式布局的根，可将盒式布局应用在任意指定区域
+     * 盒式布局
      * @author 杨宁
      */
     export class BoxLayout extends boxlayout_event.EventDispatcher {

@@ -829,57 +829,6 @@ declare namespace boxlayout {
 }
 declare namespace boxlayout {
     /**
-     * 测试拖拽面板
-     * @author 杨宁
-     * */
-    class TestDragPanel extends boxlayout_event.EventDispatcher implements IDragRender {
-        constructor();
-        minHeight: number;
-        minWidth: number;
-        private _root;
-        readonly root: HTMLElement;
-        private _ownerElement;
-        ownerElement: IBoxLayoutElement;
-        adjustDragInfo(e: MouseEvent, info: DragInfo): boolean;
-        acceptDragInfo(v: DragInfo): void;
-        private container;
-        render(container: HTMLElement): void;
-        private mouseHandle;
-        removeFromParent(): void;
-        private bx;
-        private by;
-        private bw;
-        private bh;
-        setBounds(x: number, y: number, width: number, height: number): void;
-    }
-}
-declare namespace boxlayout {
-    /**
-     * 测试TabPanel
-     * @author 杨宁
-     *  */
-    class TestTabPanel extends TabPanel {
-        private headerRender;
-        constructor();
-        private element;
-        protected renderContent(container: HTMLElement): void;
-        getHeaderRender(): IRender;
-        protected resize(newWidth: number, newHeight: number): void;
-    }
-    /**测试选项卡头部渲染器 */
-    class HeaderRender implements IRender {
-        root: HTMLButtonElement;
-        constructor();
-        minHeight: number;
-        minWidth: number;
-        private container;
-        render(container: HTMLElement): void;
-        removeFromParent(): void;
-        setBounds(x: number, y: number, width: number, height: number): void;
-    }
-}
-declare namespace boxlayout {
-    /**
      * @author 杨宁
      */
     class HtmlElementResizeHelper {

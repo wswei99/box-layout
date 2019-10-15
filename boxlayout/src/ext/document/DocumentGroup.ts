@@ -1,4 +1,8 @@
 namespace boxlayout {
+    /**
+     * 文档区视图
+     * @author 杨宁
+     */
     export class DocumentGroup extends boxlayout_event.EventDispatcher implements IDragRender {
         private static instance:DocumentGroup;
         public static getInstance():DocumentGroup{
