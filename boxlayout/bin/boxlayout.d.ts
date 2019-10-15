@@ -22,7 +22,7 @@ declare namespace boxlayout_event {
 declare namespace boxlayout {
     type Position = "left" | "right" | "top" | "bottom";
     /**
-     * 盒式布局，此容器作为盒式布局的根，可将盒式布局应用在任意指定区域
+     * 盒式布局
      * @author 杨宁
      */
     class BoxLayout extends boxlayout_event.EventDispatcher {
@@ -160,21 +160,25 @@ declare namespace boxlayout {
         private getFirstElement;
         private getSecondElement;
         /**
-         *  获取面板所在的布局元素
+         * 获取面板所在的布局元素
          * @param panelId 面板ID
          */
         getElementByPanelId(panelId: string): IBoxLayoutElement;
+        /**获取焦点管理器*/
         readonly focusManager: TabPanelFocusManager;
-        /**
-         * 焦点处理
-         */
+        /**焦点处理*/
         private focusHandler;
         /**
          * 应用布局
          * @param config 布局数据
          */
         applyLayoutConfig(config: any): void;
-        private getAllPanel;
+        /**
+         * 获取元素下所有的面板
+         * @param element 布局元素
+         * @param result 面板
+         */
+        private getAllPanelByElement;
         /**
          * 获取当前布局信息
          */
@@ -182,6 +186,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 布局元素-叶子节点
+     * @author 杨宁
+     */
     class BoxLayoutElement implements IBoxLayoutElement {
         constructor();
         private _x;
@@ -213,6 +221,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 布局元素-枝节点
+     * @author 杨宁
+     */
     class BoxLayoutContainer extends BoxLayoutElement implements IBoxLayoutContainer {
         private separatorSize;
         constructor();
@@ -279,6 +291,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 默认面板序列化器
+     * @author 杨宁
+     */
     class DefaultPanelSerialize implements IPanelSerialize {
         serialize(ownerLayout: BoxLayout, panel: ITabPanel): any;
         unSerialize(ownerLayout: BoxLayout, panelInfo: {
@@ -286,6 +302,11 @@ declare namespace boxlayout {
             closeable: boolean;
         }): ITabPanel;
     }
+    /**
+     * 占位面板
+     * - 解析布局文件时如果遇到无法解析的面板则会用此面板代替
+     * @author 杨宁
+     */
     class PlaceholderPanel extends TabPanel {
         constructor();
     }
@@ -365,7 +386,12 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 拖拽事件
+     * @author 杨宁
+     */
     class DragEvent extends boxlayout_event.Event {
+        /**开始拖拽 */
         static STARTDRAG: string;
         constructor(type: string, data?: any);
     }
@@ -474,9 +500,15 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * @author 杨宁
+     */
     class TabBarEvent extends boxlayout_event.Event {
+        /**选择改变 */
         static CHANGE: string;
+        /**开始拖拽 */
         static BEGINDRAG: string;
+        /**双击 */
         static ITEMDOUBLECLICK: string;
         constructor(type: string, data?: any);
     }
@@ -522,6 +554,7 @@ declare namespace boxlayout {
      * 文档区元素
      * - 文档区元素是一个特殊的区域，其中嵌套了另一个boxLayout
      * 一个layout里面只允许有一个文档区，如果想使用文档区请通过BoxLayout的createDocumentElement来添加
+     * @author 杨宁
      */
     class DocumentElement extends BoxLayoutElement {
         constructor();
@@ -531,6 +564,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    /**
+     * 文档区视图
+     * @author 杨宁
+     */
     class DocumentGroup extends boxlayout_event.EventDispatcher implements IDragRender {
         private static instance;
         static getInstance(): DocumentGroup;
@@ -716,18 +753,28 @@ declare namespace boxlayout {
 }
 declare namespace boxlayout {
     /**
-     * TabPanel焦点管理器
+     * TabPanel焦点管理器（单例模式）
      * @author 杨宁
      */
     class TabPanelFocusManager extends boxlayout_event.EventDispatcher {
         private static instance;
         static getInstance(): TabPanelFocusManager;
         private _foucsPanel;
+        /**当前焦点面板 */
         readonly currentFocus: ITabPanel;
+        /**设置焦点面板 */
         focus(panel: ITabPanel): void;
         private activeGroups;
+        /**
+         * 获取活动状态的面板组
+         * - 焦点面板所在的组为活动组
+         * @param layout 布局对象
+         */
         getActiveGroup(layout: BoxLayout): TabGroup;
         private addActiveGroup;
+        /**
+         * 重置
+         */
         reSet(): void;
     }
 }

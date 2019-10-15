@@ -38,7 +38,7 @@ export class HeaderRender implements boxlayout.IRender {
     public root: HTMLButtonElement;
     constructor() {
         this.root = document.createElement('button');
-        this.root.textContent = "click me";
+        this.root.textContent = "toolbar";
     }
     
     public minHeight:number=0;

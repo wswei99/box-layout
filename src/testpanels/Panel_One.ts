@@ -11,6 +11,7 @@ export class Panel_One extends boxlayout.TabPanel {
             this.element.innerText = this.element.innerText + `\n${Panel_One.ID}`;
         });
         this.minHeight=this.minWidth=200;
+        this.closeable=false;
     }
     private element: HTMLDivElement;
     //重写 以实现自定义面板
@@ -24,6 +25,9 @@ export class Panel_One extends boxlayout.TabPanel {
         //     e.dataTransfer.dropEffect='copy';
         //     e.preventDefault();
         // }
+        setTimeout(() => {
+            this.ownerLayout.focusManager.focus(this);
+        }, 3000);
     }
     //重写 以实现选项卡头部自定义内容
     public getToolsRender(): boxlayout.IRender {
@@ -45,7 +49,7 @@ export class HeaderRender implements boxlayout.IRender {
     public minWidth:number=0;
     constructor() {
         this.root = document.createElement('button');
-        this.root.textContent = "click me";
+        this.root.textContent = "toolbar";
     }
     private container: HTMLElement;
     render(container: HTMLElement): void {

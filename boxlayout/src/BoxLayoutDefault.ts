@@ -1,5 +1,9 @@
 /// <reference path="./render/tabgroup/TabPanel.ts" />
 namespace boxlayout {
+    /**
+     * 默认面板序列化器
+     * @author 杨宁
+     */
     export class DefaultPanelSerialize implements IPanelSerialize {
         public serialize(ownerLayout: BoxLayout, panel: ITabPanel): any {
             return { panelID: panel.id, closeable: panel.closeable };
@@ -13,7 +17,11 @@ namespace boxlayout {
             return panel;
         }
     }
-
+    /**
+     * 占位面板
+     * - 解析布局文件时如果遇到无法解析的面板则会用此面板代替
+     * @author 杨宁
+     */
     export class PlaceholderPanel extends TabPanel {
         constructor() {
             super();

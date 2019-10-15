@@ -1,4 +1,8 @@
 namespace boxlayout {
+    /**
+     * 布局元素-叶子节点
+     * @author 杨宁
+     */
     export class BoxLayoutElement implements IBoxLayoutElement {
         constructor() {
             this._render = new TabGroup();

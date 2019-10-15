@@ -70,7 +70,7 @@ namespace boxlayout {
                 }
             }
             //焦点处理事件
-            this._area.addEventListener('mousedown', this.focusHandler,true);
+            this._area.addEventListener('mousedown', this.focusHandler, true);
         }
         /**
          * 获取激活的选项卡组
@@ -752,7 +752,7 @@ namespace boxlayout {
             return element;
         }
         /**
-         *  获取面板所在的布局元素
+         * 获取面板所在的布局元素
          * @param panelId 面板ID
          */
         public getElementByPanelId(panelId: string): IBoxLayoutElement {
@@ -771,22 +771,20 @@ namespace boxlayout {
             }
             return null;
         }
-
+        /**获取焦点管理器*/
         public get focusManager(): TabPanelFocusManager {
             return TabPanelFocusManager.getInstance();
         }
-        /**
-         * 焦点处理
-         */
+        /**焦点处理*/
         private focusHandler(e: MouseEvent): void {
             let panels = this.getAllOpenPanels();
             if (this.getDocumentElement()) {
                 panels = panels.concat(this.getDocumentElement().layout.getAllOpenPanels());
             }
             for (let panel of panels) {
-                if(panel.ownerGroup.selectedPanel==panel){
+                if (panel.ownerGroup.selectedPanel == panel) {
                     let p = MatrixUtil.globalToLocal(panel.root, new Point(e.clientX, e.clientY));
-                    if (this.focusManager.currentFocus!=panel&&p.x > 0 && p.y > 0 && p.x < panel.root.offsetWidth && p.y < panel.root.offsetHeight) {
+                    if (this.focusManager.currentFocus != panel && p.x > 0 && p.y > 0 && p.x < panel.root.offsetWidth && p.y < panel.root.offsetHeight) {
                         this.focusManager.focus(panel);
                         return;
                     }
@@ -802,24 +800,16 @@ namespace boxlayout {
                 });
             }
             for (let item of titleItems) {
-                if(item.panel.ownerGroup.selectedPanel==item.panel){
+                if (item.panel.ownerGroup.selectedPanel == item.panel) {
                     let p = MatrixUtil.globalToLocal(item.root, new Point(e.clientX, e.clientY));
-                    if (this.focusManager.currentFocus!=item.panel&&p.x > 0 && p.y > 0 && p.x < item.root.offsetWidth && p.y < item.root.offsetHeight) {
-                        
+                    if (this.focusManager.currentFocus != item.panel && p.x > 0 && p.y > 0 && p.x < item.root.offsetWidth && p.y < item.root.offsetHeight) {
+
                         this.focusManager.focus(item.panel);
                         return;
                     }
                 }
             }
         }
-
-        ///////
-        ///////
-        ///////
-        ///////
-        ///////
-        ///////
-
         /**
          * 应用布局
          * @param config 布局数据
@@ -890,17 +880,24 @@ namespace boxlayout {
             needRemoveList.forEach(panel => { panel.ownerGroup.removePanel(panel) });
             this.addBoxElementToRoot(element);
         }
-        private getAllPanel(element: IBoxLayoutElement, result: ITabPanel[]): void {
+        /**
+         * 获取元素下所有的面板
+         * @param element 布局元素
+         * @param result 面板
+         */
+        private getAllPanelByElement(element: IBoxLayoutElement): ITabPanel[] {
+            let resultList:ITabPanel[]=[];
             if (element instanceof BoxLayoutContainer) {
-                this.getAllPanel((element as BoxLayoutContainer).firstElement, result);
-                this.getAllPanel((element as BoxLayoutContainer).secondElement, result);
+                resultList=resultList.concat(this.getAllPanelByElement((element as BoxLayoutContainer).firstElement));
+                resultList=resultList.concat(this.getAllPanelByElement((element as BoxLayoutContainer).secondElement));
             }
             else if (!(element instanceof DocumentElement)) {
                 let panels = (element.render as TabGroup).panels;
                 panels.forEach(panel => {
-                    result.push(panel);
+                    resultList.push(panel);
                 });
             }
+            return resultList;
         }
         /**
          * 获取当前布局信息

@@ -21,6 +21,8 @@
 /**面板工具栏区**/
 .title-tools-area{
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
 }
 /**面板标题栏标题项*/
 .title-item{
@@ -40,8 +42,8 @@
 }
 /**面板标题栏标题项：焦点*/
 .title-item.focus{
-    background-color: #444444;
-    border-bottom: 1px solid #444444;
+    background-color: #505050;
+    border-bottom: 1px solid #505050;
 }
 /**面板标题栏标题项：选中*/
 .title-item.selected{

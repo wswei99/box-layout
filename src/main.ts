@@ -52,7 +52,6 @@ onload = () => {
         switch (e.button) {
             case 2:
                 let wangwu = new Panel_Doc();
-                wangwu.closeable = false;
                 layout.getDocumentElement().layout.addPanel(wangwu);
                 break
             case 1:

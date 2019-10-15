@@ -12,6 +12,7 @@ export class Panel_Two extends boxlayout.TabPanel {
         });
         
         this.minHeight=this.minWidth=200;
+        this.closeable=false;
     }
     private element: HTMLIFrameElement;
     //重写 以实现自定义内容
@@ -39,7 +40,7 @@ export class HeaderRender implements boxlayout.IRender {
     public root: HTMLButtonElement;
     constructor() {
         this.root = document.createElement('button');
-        this.root.textContent = "click me";
+        this.root.textContent = "toolbar";
     }
     public minHeight:number=0;
     public minWidth:number=0;

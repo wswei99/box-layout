@@ -92,7 +92,7 @@ var boxlayout_event;
 var boxlayout;
 (function (boxlayout) {
     /**
-     * 盒式布局，此容器作为盒式布局的根，可将盒式布局应用在任意指定区域
+     * 盒式布局
      * @author 杨宁
      */
     var BoxLayout = /** @class */ (function (_super) {
@@ -836,7 +836,7 @@ var boxlayout;
             return element;
         };
         /**
-         *  获取面板所在的布局元素
+         * 获取面板所在的布局元素
          * @param panelId 面板ID
          */
         BoxLayout.prototype.getElementByPanelId = function (panelId) {
@@ -856,15 +856,14 @@ var boxlayout;
             return null;
         };
         Object.defineProperty(BoxLayout.prototype, "focusManager", {
+            /**获取焦点管理器*/
             get: function () {
                 return boxlayout.TabPanelFocusManager.getInstance();
             },
             enumerable: true,
             configurable: true
         });
-        /**
-         * 焦点处理
-         */
+        /**焦点处理*/
         BoxLayout.prototype.focusHandler = function (e) {
             var panels = this.getAllOpenPanels();
             if (this.getDocumentElement()) {
@@ -900,12 +899,6 @@ var boxlayout;
                 }
             }
         };
-        ///////
-        ///////
-        ///////
-        ///////
-        ///////
-        ///////
         /**
          * 应用布局
          * @param config 布局数据
@@ -977,17 +970,24 @@ var boxlayout;
             needRemoveList.forEach(function (panel) { panel.ownerGroup.removePanel(panel); });
             this.addBoxElementToRoot(element);
         };
-        BoxLayout.prototype.getAllPanel = function (element, result) {
+        /**
+         * 获取元素下所有的面板
+         * @param element 布局元素
+         * @param result 面板
+         */
+        BoxLayout.prototype.getAllPanelByElement = function (element) {
+            var resultList = [];
             if (element instanceof boxlayout.BoxLayoutContainer) {
-                this.getAllPanel(element.firstElement, result);
-                this.getAllPanel(element.secondElement, result);
+                resultList = resultList.concat(this.getAllPanelByElement(element.firstElement));
+                resultList = resultList.concat(this.getAllPanelByElement(element.secondElement));
             }
             else if (!(element instanceof boxlayout.DocumentElement)) {
                 var panels = element.render.panels;
                 panels.forEach(function (panel) {
-                    result.push(panel);
+                    resultList.push(panel);
                 });
             }
+            return resultList;
         };
         /**
          * 获取当前布局信息
@@ -1033,6 +1033,10 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 布局元素-叶子节点
+     * @author 杨宁
+     */
     var BoxLayoutElement = /** @class */ (function () {
         function BoxLayoutElement() {
             this._x = 0;
@@ -1186,6 +1190,10 @@ var boxlayout;
 /// <reference path="./BoxLayoutElement.ts" />
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 布局元素-枝节点
+     * @author 杨宁
+     */
     var BoxLayoutContainer = /** @class */ (function (_super) {
         __extends(BoxLayoutContainer, _super);
         function BoxLayoutContainer() {
@@ -1523,6 +1531,10 @@ var boxlayout;
 /// <reference path="./render/tabgroup/TabPanel.ts" />
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 默认面板序列化器
+     * @author 杨宁
+     */
     var DefaultPanelSerialize = /** @class */ (function () {
         function DefaultPanelSerialize() {
         }
@@ -1540,6 +1552,11 @@ var boxlayout;
         return DefaultPanelSerialize;
     }());
     boxlayout.DefaultPanelSerialize = DefaultPanelSerialize;
+    /**
+     * 占位面板
+     * - 解析布局文件时如果遇到无法解析的面板则会用此面板代替
+     * @author 杨宁
+     */
     var PlaceholderPanel = /** @class */ (function (_super) {
         __extends(PlaceholderPanel, _super);
         function PlaceholderPanel() {
@@ -1591,11 +1608,16 @@ var boxlayout;
 /// <reference path="./EventDispatcher.ts" />
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 拖拽事件
+     * @author 杨宁
+     */
     var DragEvent = /** @class */ (function (_super) {
         __extends(DragEvent, _super);
         function DragEvent(type, data) {
             return _super.call(this, type, data) || this;
         }
+        /**开始拖拽 */
         DragEvent.STARTDRAG = 'dragevent_startdrag';
         return DragEvent;
     }(boxlayout_event.Event));
@@ -2042,13 +2064,19 @@ var boxlayout;
 /// <reference path="./EventDispatcher.ts" />
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * @author 杨宁
+     */
     var TabBarEvent = /** @class */ (function (_super) {
         __extends(TabBarEvent, _super);
         function TabBarEvent(type, data) {
             return _super.call(this, type, data) || this;
         }
+        /**选择改变 */
         TabBarEvent.CHANGE = 'tabbarevent_change';
+        /**开始拖拽 */
         TabBarEvent.BEGINDRAG = 'tabbarevent_begindrag';
+        /**双击 */
         TabBarEvent.ITEMDOUBLECLICK = 'tabbarevent_itemdoubleclick';
         return TabBarEvent;
     }(boxlayout_event.Event));
@@ -2116,6 +2144,7 @@ var boxlayout;
      * 文档区元素
      * - 文档区元素是一个特殊的区域，其中嵌套了另一个boxLayout
      * 一个layout里面只允许有一个文档区，如果想使用文档区请通过BoxLayout的createDocumentElement来添加
+     * @author 杨宁
      */
     var DocumentElement = /** @class */ (function (_super) {
         __extends(DocumentElement, _super);
@@ -2149,6 +2178,10 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
+    /**
+     * 文档区视图
+     * @author 杨宁
+     */
     var DocumentGroup = /** @class */ (function (_super) {
         __extends(DocumentGroup, _super);
         function DocumentGroup() {
@@ -3239,7 +3272,7 @@ var boxlayout;
 var boxlayout;
 (function (boxlayout) {
     /**
-     * TabPanel焦点管理器
+     * TabPanel焦点管理器（单例模式）
      * @author 杨宁
      */
     var TabPanelFocusManager = /** @class */ (function (_super) {
@@ -3256,12 +3289,14 @@ var boxlayout;
             return this.instance;
         };
         Object.defineProperty(TabPanelFocusManager.prototype, "currentFocus", {
+            /**当前焦点面板 */
             get: function () {
                 return this._foucsPanel;
             },
             enumerable: true,
             configurable: true
         });
+        /**设置焦点面板 */
         TabPanelFocusManager.prototype.focus = function (panel) {
             var _this = this;
             // if (this._foucsPanel === panel) {
@@ -3279,6 +3314,7 @@ var boxlayout;
             }
             if (this._foucsPanel) {
                 this._foucsPanel.root.focus();
+                this._foucsPanel.ownerGroup.selectedPanel = this._foucsPanel;
                 this._foucsPanel.root.className = 'panel focus';
                 this._foucsPanel.ownerGroup.tabBar.currentItems.forEach(function (item) {
                     if (item.panel === _this._foucsPanel) {
@@ -3288,6 +3324,11 @@ var boxlayout;
                 this.addActiveGroup(this._foucsPanel);
             }
         };
+        /**
+         * 获取活动状态的面板组
+         * - 焦点面板所在的组为活动组
+         * @param layout 布局对象
+         */
         TabPanelFocusManager.prototype.getActiveGroup = function (layout) {
             for (var i = 0; i < this.activeGroups.length; i++) {
                 if (this.activeGroups[i].layout === layout && this.activeGroups[i].group.panels.length != 0) {
@@ -3305,6 +3346,9 @@ var boxlayout;
             }
             this.activeGroups.push({ layout: panel.ownerGroup.ownerElement.ownerLayout, group: panel.ownerGroup });
         };
+        /**
+         * 重置
+         */
         TabPanelFocusManager.prototype.reSet = function () {
             var _this = this;
             if (this._foucsPanel) {

@@ -1,5 +1,9 @@
 /// <reference path="./BoxLayoutElement.ts" />
 namespace boxlayout {
+    /**
+     * 布局元素-枝节点
+     * @author 杨宁
+     */
     export class BoxLayoutContainer extends BoxLayoutElement implements IBoxLayoutContainer {
         private separatorSize: number = 6;
         constructor() {
