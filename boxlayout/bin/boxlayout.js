@@ -470,7 +470,7 @@ var boxlayout;
                 case boxlayout.TabGroupEvent.PANEL_REMOVING:
                     if (this.dispatchEvent(new boxlayout.BoxLayoutEvent(boxlayout.BoxLayoutEvent.PANEL_REMOVING, e.data))) {
                         var panel_1 = e.data['panel'];
-                        this.cachePanelInfo(panel_1, panel_1.ownerGroup);
+                        this.cachePanelInfo(panel_1);
                     }
                     else {
                         e.stopPropagation();
@@ -493,10 +493,12 @@ var boxlayout;
                     break;
             }
         };
-        BoxLayout.prototype.cachePanelInfo = function (panel, group) {
-            var link = [];
-            this.getDirLink(group.ownerElement, link);
-            this.closePanelInfoCache[panel.id] = link;
+        BoxLayout.prototype.cachePanelInfo = function (panel) {
+            if (panel.ownerGroup && panel.ownerGroup.ownerLayout) {
+                var link = [];
+                this.getDirLink(panel.ownerGroup.ownerElement, link);
+                this.closePanelInfoCache[panel.id] = link;
+            }
         };
         BoxLayout.prototype.getOldSpace = function (panelId) {
             var link = this.closePanelInfoCache[panelId];
@@ -775,18 +777,9 @@ var boxlayout;
          * @param panel 面板
          */
         BoxLayout.prototype.removePanel = function (panel) {
-            var all = [];
-            this.getAllChildElement(this.rootLayoutElement, all);
-            for (var i = 0; i < all.length; i++) {
-                if (!(all[i] instanceof boxlayout.DocumentElement)) {
-                    var group = all[i].render;
-                    b: for (var k = 0; k < group.panels.length; k++) {
-                        if (group.panels[k] === panel) {
-                            group.removePanel(group.panels[k]);
-                            break b;
-                        }
-                    }
-                }
+            if (panel.ownerGroup) {
+                this.cachePanelInfo(panel);
+                panel.ownerGroup.removePanel(panel);
             }
         };
         /**获取所有已打开的面板 */
@@ -3184,12 +3177,6 @@ var boxlayout;
                         this.ownerElement.ownerLayout.removeBoxElement(this.ownerElement);
                     }
                     break;
-                case 'closeall':
-                    for (var i = this.panels.length - 1; i >= 0; i--) {
-                        this.removePanelWithEvent(this.panels[i]);
-                    }
-                    this.ownerElement.ownerLayout.removeBoxElement(this.ownerElement);
-                    break;
             }
         };
         TabGroup.prototype.removePanelWithEvent = function (panel) {
@@ -3509,12 +3496,11 @@ var boxlayout;
             }
         };
         HtmlElementResizeHelper.startListen = function () {
-            var _this = this;
-            this.stopListen();
-            this.intervalTag = setInterval(function () { _this.checkSize(); }, 1);
+            this.checkTag = true;
+            this.update();
         };
         HtmlElementResizeHelper.stopListen = function () {
-            clearInterval(this.intervalTag);
+            this.checkTag = false;
         };
         HtmlElementResizeHelper.checkSize = function () {
             this.listenList.forEach(function (element) {
@@ -3527,6 +3513,12 @@ var boxlayout;
             });
         };
         HtmlElementResizeHelper.listenList = [];
+        HtmlElementResizeHelper.checkTag = false;
+        HtmlElementResizeHelper.update = function () {
+            HtmlElementResizeHelper.checkSize();
+            if (HtmlElementResizeHelper.checkTag)
+                requestAnimationFrame(HtmlElementResizeHelper.update);
+        };
         return HtmlElementResizeHelper;
     }());
     boxlayout.HtmlElementResizeHelper = HtmlElementResizeHelper;

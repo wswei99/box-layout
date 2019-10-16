@@ -4,7 +4,7 @@ export class Panel_Doc extends boxlayout.TabPanel {
     constructor() {
         super();
         this.id=Panel_Doc.ID;
-        this.title=Panel_Doc.ID;
+        this.title='面板-文档';
         this.icon=require("../assets/icon.svg");
         this.headerRender = new HeaderRender();
         this.headerRender.root.addEventListener('click', () => {
@@ -19,6 +19,12 @@ export class Panel_Doc extends boxlayout.TabPanel {
         this.element.style.background="#2b2b2b"
         this.element.style.color = "#ffffff";
         container.appendChild(this.element);
+
+        // this.element = document.createElement('iframe');
+        // this.element.src = "https://activetheory.net/home";
+        // this.element.style.background="#666666"
+        // this.element.style.color="#ffffff";
+        // container.appendChild(this.element);
     }
     //重写 以实现选项卡头部自定义内容
     public getToolsRender(): boxlayout.IRender {

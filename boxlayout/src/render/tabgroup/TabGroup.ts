@@ -418,12 +418,6 @@ namespace boxlayout {
                         this.ownerElement.ownerLayout.removeBoxElement(this.ownerElement);
                     }
                     break;
-                case 'closeall':
-                    for (let i: number = this.panels.length - 1; i >= 0; i--) {
-                        this.removePanelWithEvent(this.panels[i]);
-                    }
-                    this.ownerElement.ownerLayout.removeBoxElement(this.ownerElement);
-                    break;
             }
         }
         private removePanelWithEvent(panel: ITabPanel): void {

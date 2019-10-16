@@ -378,7 +378,7 @@ namespace boxlayout {
                 case TabGroupEvent.PANEL_REMOVING:
                     if (this.dispatchEvent(new BoxLayoutEvent(BoxLayoutEvent.PANEL_REMOVING, e.data))) {
                         let panel = e.data['panel'] as ITabPanel;
-                        this.cachePanelInfo(panel, panel.ownerGroup);
+                        this.cachePanelInfo(panel);
                     }
                     else {
                         e.stopPropagation();
@@ -406,10 +406,12 @@ namespace boxlayout {
         ////
         ////
         private closePanelInfoCache: any = {};
-        private cachePanelInfo(panel: ITabPanel, group: TabGroup): void {
-            let link: Position[] = [];
-            this.getDirLink(group.ownerElement, link);
-            this.closePanelInfoCache[panel.id] = link;
+        private cachePanelInfo(panel: ITabPanel): void {
+            if(panel.ownerGroup&&panel.ownerGroup.ownerLayout){
+                let link: Position[] = [];
+                this.getDirLink(panel.ownerGroup.ownerElement, link);
+                this.closePanelInfoCache[panel.id] = link;
+            }
         }
         private getOldSpace(panelId: string): TabGroup {
             let link: Position[] = this.closePanelInfoCache[panelId];
@@ -691,18 +693,9 @@ namespace boxlayout {
          * @param panel 面板
          */
         public removePanel(panel: ITabPanel): void {
-            let all: IBoxLayoutElement[] = [];
-            this.getAllChildElement(this.rootLayoutElement, all);
-            for (let i: number = 0; i < all.length; i++) {
-                if (!(all[i] instanceof DocumentElement)) {
-                    let group = (all[i].render as TabGroup);
-                    b: for (let k: number = 0; k < group.panels.length; k++) {
-                        if (group.panels[k] === panel) {
-                            group.removePanel(group.panels[k]);
-                            break b;
-                        }
-                    }
-                }
+            if(panel.ownerGroup){
+                this.cachePanelInfo(panel);
+                panel.ownerGroup.removePanel(panel);
             }
         }
         /**获取所有已打开的面板 */

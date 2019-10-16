@@ -21,13 +21,18 @@ namespace boxlayout {
 				this.stopListen();
 			}
 		}
-		private static intervalTag: any;
+		private static checkTag=false;
 		private static startListen(): void {
-			this.stopListen();
-			this.intervalTag = setInterval(() => { this.checkSize(); }, 1);
+			this.checkTag=true;
+			this.update()
+		}
+		private static update=()=>{
+			HtmlElementResizeHelper.checkSize();
+			if(HtmlElementResizeHelper.checkTag)
+				requestAnimationFrame(HtmlElementResizeHelper.update);
 		}
 		private static stopListen(): void {
-			clearInterval(this.intervalTag);
+			this.checkTag=false;
 		}
 		public static checkSize(): void {
 			this.listenList.forEach(element => {

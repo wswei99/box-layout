@@ -4,7 +4,7 @@ export class Panel_Two extends boxlayout.TabPanel {
     constructor() {
         super();
         this.id=Panel_Two.ID;
-        this.title=Panel_Two.ID;
+        this.title='面板-2';
         this.icon=require("../assets/icon.svg");
         this.headerRender = new HeaderRender();
         this.headerRender.root.addEventListener('click', () => {
@@ -12,16 +12,10 @@ export class Panel_Two extends boxlayout.TabPanel {
         });
         
         this.minHeight=this.minWidth=200;
-        this.closeable=false;
     }
     private element: HTMLIFrameElement;
     //重写 以实现自定义内容
     protected renderContent(container: HTMLElement): void {
-        // this.element = document.createElement('iframe');
-        // this.element.src = "http://gc.hgame.com/home/game/appid/100389/gameid/100416/sr/2/pt/179";
-        // this.element.style.background="#666666"
-        // this.element.style.color="#ffffff";
-        // container.appendChild(this.element);
     }
     //重写 以实现选项卡头部自定义内容
     public getToolsRender(): boxlayout.IRender {

@@ -1,6 +1,10 @@
 # box-layout
-盒式布局，用于搭建灵活的多面板Web应用程序
-
+盒式布局，用于搭建灵活的多面板Web应用程序。
+* 支持"文档"区
+* 支持面板自定义工具栏
+* 支持自定义主题
+## 预览
+![preview](./doc/preview.png)
 ## 如何运行
 1. ```npm install```（请确保本机已经安装Node.js）
 2. ```npm run build```

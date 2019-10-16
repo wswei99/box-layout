@@ -1,43 +1,30 @@
 export class Panel_One extends boxlayout.TabPanel {
     public static ID='Panel_One';
-    private headerRender: HeaderRender;
-    constructor() {
+    private callback:Function;
+    constructor(callback:(type:string)=>{}) {
         super();
+        this.callback=callback;
         this.id=Panel_One.ID;
-        this.title=Panel_One.ID;
+        this.title='面板-测试';
         this.icon=require("../assets/icon.svg");
-        this.headerRender = new HeaderRender();
-        this.headerRender.root.addEventListener('click', () => {
-            this.element.innerText = this.element.innerText + `\n${Panel_One.ID}`;
-        });
         this.minHeight=this.minWidth=200;
         this.closeable=false;
     }
-    private element: HTMLDivElement;
     //重写 以实现自定义面板
     protected renderContent(container: HTMLElement): void {
-        // let div=document.createElement('div');
-        // container.appendChild(div);
-        // div.draggable=true;
-        // div.ondragstart=(e)=>{
-        // }
-        // container.ondragover=(e)=>{
-        //     e.dataTransfer.dropEffect='copy';
-        //     e.preventDefault();
-        // }
-        setTimeout(() => {
-            this.ownerLayout.focusManager.focus(this);
-        }, 3000);
-    }
-    //重写 以实现选项卡头部自定义内容
-    public getToolsRender(): boxlayout.IRender {
-        return this.headerRender;
-    }
-    //重写 做相关处理
-    protected resize(newWidth: number, newHeight: number): void {
-        if (this.element) {
-            this.element.style.width = newWidth + 'px';
-            this.element.style.height = newHeight + 'px';
+        let testData=[
+            {id:'reset',label:'重置布局'},
+            {id:'add_doc',label:'在文档区添加一个面板'},
+            {id:'toggle',label:'打开/关闭 面板-3'},
+        ]
+        for(var {id,label} of testData){
+            let btn=document.createElement('button');
+            btn.id=id;
+            btn.innerText=label;
+            container.appendChild(btn);
+            btn.onclick=(e:MouseEvent)=>{
+                this.callback((e.currentTarget as HTMLButtonElement).id);
+            }
         }
     }
 }

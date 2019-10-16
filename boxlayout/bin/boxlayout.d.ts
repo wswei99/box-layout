@@ -885,8 +885,9 @@ declare namespace boxlayout {
          */
         static watch(target: HTMLElement): void;
         static unWatch(target: HTMLElement): void;
-        private static intervalTag;
+        private static checkTag;
         private static startListen;
+        private static update;
         private static stopListen;
         static checkSize(): void;
     }

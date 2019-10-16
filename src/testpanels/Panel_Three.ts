@@ -4,7 +4,7 @@ export class Panel_Three extends boxlayout.TabPanel {
     constructor() {
         super();
         this.id=Panel_Three.ID;
-        this.title=Panel_Three.ID;
+        this.title='面板-3';
         this.priorityLevel=1;
         // this.icon=require("../assets/icon.svg");
         this.headerRender = new HeaderRender();
@@ -13,7 +13,6 @@ export class Panel_Three extends boxlayout.TabPanel {
         });
         
         this.minHeight=this.minWidth=150;
-        this.closeable=false;
     }
     private element: HTMLDivElement;
     //重写 以实现自定义内容
