@@ -332,6 +332,12 @@ namespace boxlayout {
                     this.startSize.x = container.lockElement.width;
                     this.startSize.y = container.lockElement.height;
                     this.targetContainer = container;
+                    this.maskElement.render(this._area);
+                    this.maskElement.setBounds(
+                        this.rootLayoutElement.x,
+                        this.rootLayoutElement.y,
+                        this.rootLayoutElement.width,
+                        this.rootLayoutElement.height);
                     window.addEventListener("mouseup", this.separatorHandle, true);
                     window.addEventListener("mousemove", this.separatorHandle, true);
                     break;
@@ -364,6 +370,7 @@ namespace boxlayout {
                     e.preventDefault();
                     this.cursorLock = false;
                     this._area.style.cursor = "default";
+                    this.maskElement.removeFromParent();
                     window.removeEventListener("mousemove", this.separatorHandle, true);
                     window.removeEventListener("mouseup", this.separatorHandle, true);
                     break;

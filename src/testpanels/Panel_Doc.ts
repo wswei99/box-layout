@@ -12,7 +12,7 @@ export class Panel_Doc extends boxlayout.TabPanel {
             this.element.appendChild(input);
         });
     }
-    private element: HTMLDivElement;
+    private element: HTMLElement;
     //重写 以实现自定义内容
     protected renderContent(container: HTMLElement): void {
         this.element = document.createElement('div');
@@ -20,8 +20,9 @@ export class Panel_Doc extends boxlayout.TabPanel {
         this.element.style.color = "#ffffff";
         container.appendChild(this.element);
 
+        ////test
         // this.element = document.createElement('iframe');
-        // this.element.src = "https://activetheory.net/home";
+        // this.element['src'] = "https://activetheory.net/home";
         // this.element.style.background="#666666"
         // this.element.style.color="#ffffff";
         // container.appendChild(this.element);
