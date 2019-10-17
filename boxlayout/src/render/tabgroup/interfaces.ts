@@ -8,10 +8,6 @@ namespace boxlayout {
         id: string;
         /**面板标题 */
         title: string;
-        /**面板图标 */
-        icon: string;
-        /**是否可关闭 */
-        closeable:boolean;
         /**所属的容器 */
         ownerGroup:TabGroup;
         /**所属的布局 */

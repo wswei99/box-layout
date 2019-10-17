@@ -137,6 +137,7 @@ namespace boxlayout {
                     let newElement: IBoxLayoutElement = new BoxLayoutElement();
                     targetElement.ownerLayout.addBoxElement(targetElement, newElement, dir as Position);
                     (newElement.render as TabGroup).addPanel(startPanel);
+                    (newElement.render as TabGroup).dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_DRAG, startPanel));
                     break;
             }
         }

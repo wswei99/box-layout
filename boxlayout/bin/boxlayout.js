@@ -15,14 +15,14 @@ var boxlayout_event;
 (function (boxlayout_event) {
     var EventDispatcher = /** @class */ (function () {
         function EventDispatcher() {
-            this.__z_e_listeners = {};
+            this.listeners = {};
         }
         EventDispatcher.prototype.addEventListener = function (type, fun, thisObj, level) {
             if (level === void 0) { level = 0; }
-            var list = this.__z_e_listeners[type];
+            var list = this.listeners[type];
             if (list === undefined) {
                 list = [];
-                this.__z_e_listeners[type] = list;
+                this.listeners[type] = list;
             }
             var item = {
                 func: fun,
@@ -36,7 +36,7 @@ var boxlayout_event;
         };
         ;
         EventDispatcher.prototype.removeEventListener = function (type, fun, thisObj) {
-            var list = this.__z_e_listeners[type];
+            var list = this.listeners[type];
             if (list !== undefined) {
                 var size = list.length;
                 for (var i = 0; i < size; i++) {
@@ -50,7 +50,7 @@ var boxlayout_event;
         };
         ;
         EventDispatcher.prototype.dispatchEvent = function (event) {
-            var list = this.__z_e_listeners[event.type];
+            var list = this.listeners[event.type];
             if (list !== undefined) {
                 var size = list.length;
                 for (var i = 0; i < size; i++) {
@@ -320,8 +320,6 @@ var boxlayout;
                     element.render.render(this._area);
                     element.render.addEventListener(boxlayout.DragEvent.STARTDRAG, this.dragHandle, this);
                     element.render.addEventListener(boxlayout.TabGroupEvent.SELECTCHANGE, this.panelHandle, this);
-                    element.render.addEventListener(boxlayout.TabGroupEvent.PANEL_REMOVING, this.panelHandle, this);
-                    element.render.addEventListener(boxlayout.TabGroupEvent.PANEL_REMOVED, this.panelHandle, this);
                     element.render.addEventListener(boxlayout.TabGroupEvent.PANEL_DRAG, this.panelHandle, this);
                 }
             }
@@ -338,8 +336,6 @@ var boxlayout;
                     element.render.removeFromParent();
                     element.render.removeEventListener(boxlayout.DragEvent.STARTDRAG, this.dragHandle, this);
                     element.render.removeEventListener(boxlayout.TabGroupEvent.SELECTCHANGE, this.panelHandle, this);
-                    element.render.removeEventListener(boxlayout.TabGroupEvent.PANEL_REMOVING, this.panelHandle, this);
-                    element.render.removeEventListener(boxlayout.TabGroupEvent.PANEL_REMOVED, this.panelHandle, this);
                     element.render.removeEventListener(boxlayout.TabGroupEvent.PANEL_DRAG, this.panelHandle, this);
                 }
                 element.ownerLayout = null;
@@ -470,27 +466,7 @@ var boxlayout;
                     var group = e.data;
                     this.focusManager.focus(group.selectedPanel);
                     break;
-                case boxlayout.TabGroupEvent.PANEL_REMOVING:
-                    if (this.dispatchEvent(new boxlayout.BoxLayoutEvent(boxlayout.BoxLayoutEvent.PANEL_REMOVING, e.data))) {
-                        var panel_1 = e.data['panel'];
-                        this.cachePanelInfo(panel_1);
-                    }
-                    else {
-                        e.stopPropagation();
-                    }
-                    break;
-                case boxlayout.TabGroupEvent.PANEL_REMOVED:
-                    this.dispatchEvent(new boxlayout.BoxLayoutEvent(boxlayout.BoxLayoutEvent.PANEL_REMOVED, e.data));
-                    group = e.data['group'];
-                    if (group.panels.length > 0) {
-                        this.focusManager.focus(group.selectedPanel);
-                    }
-                    else {
-                        this.focusManager.focus(null);
-                    }
-                    break;
                 case boxlayout.TabGroupEvent.PANEL_DRAG:
-                    this.dispatchEvent(new boxlayout.BoxLayoutEvent(boxlayout.BoxLayoutEvent.PANEL_DRAG, e.data));
                     var panel = e.data;
                     this.focusManager.focus(panel);
                     break;
@@ -700,17 +676,17 @@ var boxlayout;
             return this.panelDic[id];
         };
         /**
-         * 根据Id添加一个面板，如果面板已经打开则选中该面板并设置焦点
+         * 根据Id打开一个面板，如果面板已经打开则选中该面板并设置焦点
          * @param panelId 面板ID
          * @param oldSpace 是否尝试在原来的区域打开，如果布局发生较大的变化可能出现原始位置寻找错误的情况，默认true
          */
-        BoxLayout.prototype.addPanelById = function (panelId, oldSpace) {
+        BoxLayout.prototype.openPanelById = function (panelId, oldSpace) {
             if (oldSpace === void 0) { oldSpace = true; }
             var panel = this.getRegistPanelById(panelId);
             if (!panel) {
                 throw new Error("ID为 " + panelId + " 的面板未注册");
             }
-            this.addPanel(panel);
+            this.addPanel(panel, oldSpace);
         };
         /**
          * 添加一个panel，如果面板已经打开则选中该面板并设置焦点
@@ -768,7 +744,7 @@ var boxlayout;
          * 根据Id关闭一个面板
          * @param panelId 面板ID
          */
-        BoxLayout.prototype.removePanelById = function (panelId) {
+        BoxLayout.prototype.closePanelById = function (panelId) {
             var panel = this.getRegistPanelById(panelId);
             if (!panel) {
                 throw new Error("ID为 " + panelId + " 的面板未注册");
@@ -777,12 +753,18 @@ var boxlayout;
         };
         /**
          * 删除一个面板
-         * @param panel 面板
+         * @param panel 要删除的面板
          */
         BoxLayout.prototype.removePanel = function (panel) {
-            if (panel.ownerGroup) {
+            var group = panel.ownerGroup;
+            if (group) {
+                //缓存面板信息
                 this.cachePanelInfo(panel);
-                panel.ownerGroup.removePanel(panel);
+                group.removePanel(panel);
+                //移除区域
+                if (group.panels.length === 0) {
+                    this.removeBoxElement(group.ownerElement);
+                }
             }
         };
         /**获取所有已打开的面板 */
@@ -1490,11 +1472,13 @@ var boxlayout;
             this.container.appendChild(this.root);
             if (this.isFirst) {
                 this.isFirst = false;
-                this.renderContent(this._root);
+                this.onCreate(this._root);
             }
+            this.onAdd();
         };
         TabPanel.prototype.removeFromParent = function () {
             this.root.remove();
+            this.onRemove();
         };
         TabPanel.prototype.setBounds = function (x, y, width, height) {
             if (this.bw !== width || this.bh !== height) {
@@ -1502,7 +1486,7 @@ var boxlayout;
                 this.root.style.height = height + 'px';
                 this.bw = width;
                 this.bh = height;
-                this.resize(width, height);
+                this.onResize(width, height);
             }
             this.root.style.left = x + 'px';
             this.root.style.top = y + 'px';
@@ -1514,11 +1498,37 @@ var boxlayout;
             if (this.ownerGroup)
                 this.ownerGroup.refresh();
         };
-        TabPanel.prototype.renderContent = function (container) {
-            //子代重写实现自定义内容
+        /**
+         * 首次创建时触发
+         */
+        TabPanel.prototype.onCreate = function (container) {
+            //子代重写
         };
-        TabPanel.prototype.resize = function (newWidth, newHeight) {
-            //子代重写做相关处理
+        /**
+         * 当添加到视图时调用
+         */
+        TabPanel.prototype.onAdd = function () {
+            //子代重写
+        };
+        /**
+         * 当删除面板时调用,返回false可取消关闭
+         * - 只有当用户行为下会触发，调用API删除并不会触发
+         */
+        TabPanel.prototype.onRemoving = function () {
+            return true;
+            //子代重写
+        };
+        /**
+         * 当面板已被删除时调用
+         */
+        TabPanel.prototype.onRemove = function () {
+            //子代重写
+        };
+        /**
+         * 当面板尺寸发生改变时调用
+         */
+        TabPanel.prototype.onResize = function (width, height) {
+            //子代重写
         };
         return TabPanel;
     }(boxlayout_event.EventDispatcher));
@@ -1564,42 +1574,6 @@ var boxlayout;
         return PlaceholderPanel;
     }(boxlayout.TabPanel));
     boxlayout.PlaceholderPanel = PlaceholderPanel;
-})(boxlayout || (boxlayout = {}));
-var boxlayout;
-(function (boxlayout) {
-    var BoxLayoutEvent = /** @class */ (function (_super) {
-        __extends(BoxLayoutEvent, _super);
-        function BoxLayoutEvent(type, data) {
-            return _super.call(this, type, data) || this;
-        }
-        /**
-         * 添加了一个Panel
-         * data:{panel:ITabPanel,tabGroup:TabGroup}
-         */
-        BoxLayoutEvent.PANEL_ADDED = "tabgroupevent_paneladded";
-        /**
-        * 正在移除Panel
-        * data:{panel:ITabPanel,group:TabGroup}
-        */
-        BoxLayoutEvent.PANEL_REMOVING = "tabgroupevent_panelremoving";
-        /**
-        * 移除了一个Panel
-        * data:{panel:ITabPanel,group:TabGroup}
-        */
-        BoxLayoutEvent.PANEL_REMOVED = "tabgroupevent_panelremoved";
-        /**
-         * 拖拽了一个Panel
-         * data:panel
-         */
-        BoxLayoutEvent.PANEL_DRAG = 'tabgroupevent_paneldrag';
-        /**
-         * 焦点发生变化
-         * data:焦点panel
-         */
-        BoxLayoutEvent.FOCUS_CHANGED = 'focuschanged';
-        return BoxLayoutEvent;
-    }(boxlayout_event.Event));
-    boxlayout.BoxLayoutEvent = BoxLayoutEvent;
 })(boxlayout || (boxlayout = {}));
 /// <reference path="./EventDispatcher.ts" />
 var boxlayout;
@@ -2091,14 +2065,6 @@ var boxlayout;
          */
         TabGroupEvent.SELECTCHANGE = 'selectchange';
         /**
-         * data:{panel:ITabPanel,group:TabGroup}
-         */
-        TabGroupEvent.PANEL_REMOVING = "panelremoving";
-        /**
-         * data:{panel:ITabPanel,group:TabGroup}
-         */
-        TabGroupEvent.PANEL_REMOVED = "panelremoved";
-        /**
          * data:ITabPanel
          */
         TabGroupEvent.PANEL_DRAG = 'paneldrag';
@@ -2116,23 +2082,6 @@ var boxlayout;
         return TabPanelEvent;
     }(boxlayout_event.Event));
     boxlayout.TabPanelEvent = TabPanelEvent;
-})(boxlayout || (boxlayout = {}));
-/// <reference path="./EventDispatcher.ts" />
-var boxlayout;
-(function (boxlayout) {
-    var TabPanelFocusManagerEvent = /** @class */ (function (_super) {
-        __extends(TabPanelFocusManagerEvent, _super);
-        function TabPanelFocusManagerEvent(type, data) {
-            return _super.call(this, type, data) || this;
-        }
-        /**
-         * 焦点改变
-         * data:ITabPanel
-         */
-        TabPanelFocusManagerEvent.FOCUSCHANGE = 'focuschange';
-        return TabPanelFocusManagerEvent;
-    }(boxlayout_event.Event));
-    boxlayout.TabPanelFocusManagerEvent = TabPanelFocusManagerEvent;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
@@ -2343,6 +2292,7 @@ var boxlayout;
                     var newElement = new boxlayout.BoxLayoutElement();
                     targetElement.ownerLayout.addBoxElement(targetElement, newElement, dir);
                     newElement.render.addPanel(startPanel);
+                    newElement.render.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_DRAG, startPanel));
                     break;
             }
         };
@@ -3134,7 +3084,7 @@ var boxlayout;
                             startElement.ownerLayout.removeBoxElement(startElement);
                         }
                         targetElement.render.addPanel(startPanel);
-                        this.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_DRAG, startPanel));
+                        targetElement.render.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_DRAG, startPanel));
                     }
                     else {
                         if (startElement === targetElement && startElement.render.panels.length === 1) {
@@ -3147,7 +3097,7 @@ var boxlayout;
                         var newElement = new boxlayout.BoxLayoutElement();
                         targetElement.ownerLayout.addBoxElement(targetElement, newElement, dir);
                         newElement.render.addPanel(startPanel);
-                        this.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_DRAG, startPanel));
+                        newElement.render.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_DRAG, startPanel));
                     }
                     break;
                 case "panel":
@@ -3162,30 +3112,14 @@ var boxlayout;
                             startElement.ownerLayout.removeBoxElement(startElement);
                         }
                         targetElement.render.addPanelTo(targetPanel, startPanel, dir);
-                        this.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_DRAG, startPanel));
+                        targetElement.render.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_DRAG, startPanel));
                     }
                     else {
                         targetElement.render.addPanelTo(targetPanel, startPanel, dir);
-                        this.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_DRAG, startPanel));
+                        targetElement.render.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_DRAG, startPanel));
                     }
                     break;
             }
-        };
-        TabGroup.prototype.$execCommand = function (command) {
-            switch (command) {
-                case 'close':
-                    var targetPanel = this.panels[this.selectedIndex];
-                    this.removePanelWithEvent(targetPanel);
-                    if (this.panels.length === 0) {
-                        this.ownerElement.ownerLayout.removeBoxElement(this.ownerElement);
-                    }
-                    break;
-            }
-        };
-        TabGroup.prototype.removePanelWithEvent = function (panel) {
-            this.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_REMOVING, { panel: panel, group: this }));
-            this.removePanel(panel);
-            this.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.PANEL_REMOVED, { panel: panel, group: this }));
         };
         TabGroup.prototype.render = function (container) {
             this.container = container;
@@ -3292,16 +3226,15 @@ var boxlayout;
             // if (this._foucsPanel === panel) {
             //     return;
             // }
-            var oldFocusPanel = this._foucsPanel;
-            this._foucsPanel = panel;
-            if (oldFocusPanel && oldFocusPanel.ownerGroup) {
-                oldFocusPanel.root.className = 'panel';
-                oldFocusPanel.ownerGroup.tabBar.currentItems.forEach(function (item) {
-                    if (item.panel === oldFocusPanel) {
+            if (this._foucsPanel && this._foucsPanel.ownerLayout) {
+                this._foucsPanel.root.className = 'panel';
+                this._foucsPanel.ownerGroup.tabBar.currentItems.forEach(function (item) {
+                    if (item.panel === _this._foucsPanel) {
                         item.root.className = item.selected ? 'title-item selected' : 'title-item';
                     }
                 });
             }
+            this._foucsPanel = panel;
             if (this._foucsPanel) {
                 this._foucsPanel.root.focus();
                 this._foucsPanel.ownerGroup.selectedPanel = this._foucsPanel;
@@ -3368,6 +3301,20 @@ var boxlayout;
             this.minHeight = 0;
             this.minWidth = 0;
             this._selected = false;
+            this.closeHandler = function () {
+                if (_this._panel.onRemoving()) {
+                    var group = _this.panel.ownerGroup;
+                    //删除
+                    _this.panel.ownerLayout.removePanel(_this.panel);
+                    //重置焦点
+                    if (group.panels.length > 0) {
+                        boxlayout.TabPanelFocusManager.getInstance().focus(group.selectedPanel);
+                    }
+                    else {
+                        boxlayout.TabPanelFocusManager.getInstance().focus(null);
+                    }
+                }
+            };
             this._root = document.createElement('div');
             this._root.className = 'title-item';
             this.iconElement = document.createElement('img');
@@ -3379,9 +3326,7 @@ var boxlayout;
             this.closeBtn = document.createElement('a');
             this.closeBtn.className = 'title-closebtn';
             this.root.appendChild(this.closeBtn);
-            this.closeBtn.addEventListener('click', function () {
-                _this.panel.ownerGroup.$execCommand('close');
-            });
+            this.closeBtn.addEventListener('click', this.closeHandler);
         }
         Object.defineProperty(DefaultTitleRender.prototype, "root", {
             get: function () {

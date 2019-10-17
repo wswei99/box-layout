@@ -5,15 +5,15 @@ namespace boxlayout_event{
         dispatchEvent(event:Event): void
     }
     export class EventDispatcher implements IEventDispatcher{
-        __z_e_listeners: any = {};
+        listeners: any = {};
         public constructor() {
     
         }
         addEventListener(type:string, fun:Function, thisObj: any,level:number=0): void {
-            let list:any[] = this.__z_e_listeners[type];
+            let list:any[] = this.listeners[type];
             if (list === undefined) {
                 list = [];
-                this.__z_e_listeners[type] = list;
+                this.listeners[type] = list;
             }
             var item = {
                 func: fun,
@@ -26,7 +26,7 @@ namespace boxlayout_event{
             });
         };
         removeEventListener(type:string, fun:Function, thisObj:any): void {
-            var list = this.__z_e_listeners[type];
+            var list = this.listeners[type];
             if (list !== undefined) {
                 var size = list.length;
                 for (var i = 0; i < size; i++) {
@@ -39,7 +39,7 @@ namespace boxlayout_event{
             }
         };
         dispatchEvent(event:Event): boolean {
-            var list = this.__z_e_listeners[event.type];
+            var list = this.listeners[event.type];
             if (list !== undefined) {
                 var size = list.length;
                 for (var i = 0; i < size; i++) {

@@ -29,7 +29,16 @@ class Main {
                 }
             }
         );
-        this.layout.registPanel(new Panel_One(this.testHandler));
+        this.layout.registPanel(new Panel_One(
+            this.testHandler,
+            [
+                { id: 'reset', label: '重置布局' },
+                { id: 'add_doc', label: '在文档区添加一个面板' },
+                { id: 'open', label: '在新位置打开 面板-3' },
+                { id: 'open-old', label: '在原始位置打开 面板-3' },
+                { id: 'close', label: '关闭 面板-3 (模拟API调用)' },
+                { id: 'close-operate', label: '关闭 面板-3 (模拟关闭按钮)' },
+            ]));
         //注册面板（注意：在应用布局配置或添加、打开面板时确保相关面板已经注册）
         this.layout.registPanel(new Panel_Two());
         this.layout.registPanel(new Panel_Three());
@@ -39,14 +48,15 @@ class Main {
         this.layout.applyLayoutConfig(this.defaultConfig);
         //--OR--//
         // //添加面板
-        // this.layout.addPanelById(Panel_One.ID)
-        // this.layout.addPanelById(Panel_Two.ID)
-        // this.layout.addPanelById(Panel_Three.ID)
-        // //添加文元素
+        // this.layout.openPanelById(Panel_One.ID)
+        // this.layout.openPanelById(Panel_Two.ID)
+        // this.layout.openPanelById(Panel_Three.ID)
+        // // //添加文元素
         // this.layout.createDocumentElement();
         // this.layout.getDocumentElement().layout.addPanel(new Panel_Doc());
     }
-    private testHandler=(type:string):any=>{
+    //测试
+    private testHandler = (type: string): any => {
         switch (type) {
             case 'reset':
                 this.layout.applyLayoutConfig(this.defaultConfig);
@@ -54,11 +64,27 @@ class Main {
             case 'add_doc':
                 this.layout.getDocumentElement().layout.addPanel(new Panel_Doc());
                 break;
-            case 'toggle':
-                if(this.layout.checkPanelOpenedById(Panel_Three.ID))
-                    this.layout.removePanelById(Panel_Three.ID)
-                else
-                    this.layout.addPanelById(Panel_Three.ID,true)
+            case 'open':
+                this.layout.openPanelById(Panel_Three.ID,false)
+                break;
+            case 'open-old':
+                this.layout.openPanelById(Panel_Three.ID)
+                break;
+            case 'close':
+                this.layout.closePanelById(Panel_Three.ID)
+                break;
+            case 'close-operate':
+                let panel = this.layout.getRegistPanelById(Panel_Three.ID) as boxlayout.TabPanel;
+                if(panel.onRemoving()){
+                    let group = panel.ownerGroup;
+                    this.layout.removePanel(panel);
+                    if (group.panels.length > 0) {
+                        this.layout.focusManager.focus(group.selectedPanel);
+                    }
+                    else {
+                        this.layout.focusManager.focus(null);
+                    }
+                }
                 break;
         }
     }

@@ -5,7 +5,7 @@ declare namespace boxlayout_event {
         dispatchEvent(event: Event): void;
     }
     class EventDispatcher implements IEventDispatcher {
-        __z_e_listeners: any;
+        listeners: any;
         constructor();
         addEventListener(type: string, fun: Function, thisObj: any, level?: number): void;
         removeEventListener(type: string, fun: Function, thisObj: any): void;
@@ -130,11 +130,11 @@ declare namespace boxlayout {
         /**根据ID获取一个已注册的面板 */
         getRegistPanelById(id: string): ITabPanel;
         /**
-         * 根据Id添加一个面板，如果面板已经打开则选中该面板并设置焦点
+         * 根据Id打开一个面板，如果面板已经打开则选中该面板并设置焦点
          * @param panelId 面板ID
          * @param oldSpace 是否尝试在原来的区域打开，如果布局发生较大的变化可能出现原始位置寻找错误的情况，默认true
          */
-        addPanelById(panelId: string, oldSpace?: boolean): void;
+        openPanelById(panelId: string, oldSpace?: boolean): void;
         /**
          * 添加一个panel，如果面板已经打开则选中该面板并设置焦点
          * @param panel 面板
@@ -145,10 +145,10 @@ declare namespace boxlayout {
          * 根据Id关闭一个面板
          * @param panelId 面板ID
          */
-        removePanelById(panelId: string): void;
+        closePanelById(panelId: string): void;
         /**
          * 删除一个面板
-         * @param panel 面板
+         * @param panel 要删除的面板
          */
         removePanel(panel: ITabPanel): void;
         /**获取所有已打开的面板 */
@@ -286,8 +286,27 @@ declare namespace boxlayout {
          * 刷新
          */
         protected refresh(): void;
-        protected renderContent(container: HTMLElement): void;
-        protected resize(newWidth: number, newHeight: any): void;
+        /**
+         * 首次创建时触发
+         */
+        onCreate(container: HTMLElement): void;
+        /**
+         * 当添加到视图时调用
+         */
+        onAdd(): void;
+        /**
+         * 当删除面板时调用,返回false可取消关闭
+         * - 只有当用户行为下会触发，调用API删除并不会触发
+         */
+        onRemoving(): boolean;
+        /**
+         * 当面板已被删除时调用
+         */
+        onRemove(): void;
+        /**
+         * 当面板尺寸发生改变时调用
+         */
+        protected onResize(width: number, height: any): void;
     }
 }
 declare namespace boxlayout {
@@ -353,36 +372,6 @@ declare namespace boxlayout {
     interface IPanelSerialize {
         serialize(ownerLayout: BoxLayout, panel: ITabPanel): any;
         unSerialize(wnerLayout: BoxLayout, panelInfo: any): ITabPanel;
-    }
-}
-declare namespace boxlayout {
-    class BoxLayoutEvent extends boxlayout_event.Event {
-        /**
-         * 添加了一个Panel
-         * data:{panel:ITabPanel,tabGroup:TabGroup}
-         */
-        static PANEL_ADDED: string;
-        /**
-        * 正在移除Panel
-        * data:{panel:ITabPanel,group:TabGroup}
-        */
-        static PANEL_REMOVING: string;
-        /**
-        * 移除了一个Panel
-        * data:{panel:ITabPanel,group:TabGroup}
-        */
-        static PANEL_REMOVED: string;
-        /**
-         * 拖拽了一个Panel
-         * data:panel
-         */
-        static PANEL_DRAG: string;
-        /**
-         * 焦点发生变化
-         * data:焦点panel
-         */
-        static FOCUS_CHANGED: string;
-        constructor(type: string, data?: any);
     }
 }
 declare namespace boxlayout {
@@ -520,14 +509,6 @@ declare namespace boxlayout {
          */
         static SELECTCHANGE: string;
         /**
-         * data:{panel:ITabPanel,group:TabGroup}
-         */
-        static PANEL_REMOVING: string;
-        /**
-         * data:{panel:ITabPanel,group:TabGroup}
-         */
-        static PANEL_REMOVED: string;
-        /**
          * data:ITabPanel
          */
         static PANEL_DRAG: string;
@@ -536,16 +517,6 @@ declare namespace boxlayout {
 }
 declare namespace boxlayout {
     class TabPanelEvent extends boxlayout_event.Event {
-        constructor(type: string, data?: any);
-    }
-}
-declare namespace boxlayout {
-    class TabPanelFocusManagerEvent extends boxlayout_event.Event {
-        /**
-         * 焦点改变
-         * data:ITabPanel
-         */
-        static FOCUSCHANGE: string;
         constructor(type: string, data?: any);
     }
 }
@@ -735,8 +706,6 @@ declare namespace boxlayout {
         private adjustDragInfo_tabBox;
         private adjustDragInfo_tabGroup;
         acceptDragInfo(v: DragInfo): void;
-        $execCommand(command: string): void;
-        private removePanelWithEvent;
         private container;
         render(container: HTMLElement): void;
         removeFromParent(): void;
@@ -799,6 +768,7 @@ declare namespace boxlayout {
         private container;
         render(container: HTMLElement): void;
         removeFromParent(): void;
+        private closeHandler;
         updateDisplay(): void;
         private commitSelected;
         private bx;
@@ -831,10 +801,6 @@ declare namespace boxlayout {
         id: string;
         /**面板标题 */
         title: string;
-        /**面板图标 */
-        icon: string;
-        /**是否可关闭 */
-        closeable: boolean;
         /**所属的容器 */
         ownerGroup: TabGroup;
         /**所属的布局 */

@@ -226,8 +226,6 @@ namespace boxlayout {
                     element.render.render(this._area);
                     element.render.addEventListener(DragEvent.STARTDRAG, this.dragHandle, this);
                     element.render.addEventListener(TabGroupEvent.SELECTCHANGE, this.panelHandle, this);
-                    element.render.addEventListener(TabGroupEvent.PANEL_REMOVING, this.panelHandle, this);
-                    element.render.addEventListener(TabGroupEvent.PANEL_REMOVED, this.panelHandle, this);
                     element.render.addEventListener(TabGroupEvent.PANEL_DRAG, this.panelHandle, this);
                 }
             }
@@ -244,8 +242,6 @@ namespace boxlayout {
                     element.render.removeFromParent();
                     element.render.removeEventListener(DragEvent.STARTDRAG, this.dragHandle, this);
                     element.render.removeEventListener(TabGroupEvent.SELECTCHANGE, this.panelHandle, this);
-                    element.render.removeEventListener(TabGroupEvent.PANEL_REMOVING, this.panelHandle, this);
-                    element.render.removeEventListener(TabGroupEvent.PANEL_REMOVED, this.panelHandle, this);
                     element.render.removeEventListener(TabGroupEvent.PANEL_DRAG, this.panelHandle, this);
                 }
                 element.ownerLayout = null;
@@ -382,27 +378,7 @@ namespace boxlayout {
                     let group = e.data as TabGroup;
                     this.focusManager.focus(group.selectedPanel);
                     break;
-                case TabGroupEvent.PANEL_REMOVING:
-                    if (this.dispatchEvent(new BoxLayoutEvent(BoxLayoutEvent.PANEL_REMOVING, e.data))) {
-                        let panel = e.data['panel'] as ITabPanel;
-                        this.cachePanelInfo(panel);
-                    }
-                    else {
-                        e.stopPropagation();
-                    }
-                    break;
-                case TabGroupEvent.PANEL_REMOVED:
-                    this.dispatchEvent(new BoxLayoutEvent(BoxLayoutEvent.PANEL_REMOVED, e.data));
-                    group = e.data['group'] as TabGroup;
-                    if (group.panels.length > 0) {
-                        this.focusManager.focus(group.selectedPanel);
-                    }
-                    else {
-                        this.focusManager.focus(null);
-                    }
-                    break;
                 case TabGroupEvent.PANEL_DRAG:
-                    this.dispatchEvent(new BoxLayoutEvent(BoxLayoutEvent.PANEL_DRAG, e.data));
                     let panel = e.data as ITabPanel;
                     this.focusManager.focus(panel);
                     break;
@@ -622,16 +598,16 @@ namespace boxlayout {
             return this.panelDic[id];
         }
         /**
-         * 根据Id添加一个面板，如果面板已经打开则选中该面板并设置焦点
+         * 根据Id打开一个面板，如果面板已经打开则选中该面板并设置焦点
          * @param panelId 面板ID
          * @param oldSpace 是否尝试在原来的区域打开，如果布局发生较大的变化可能出现原始位置寻找错误的情况，默认true
          */
-        public addPanelById(panelId: string, oldSpace: boolean = true): void {
+        public openPanelById(panelId: string, oldSpace: boolean = true): void {
             let panel = this.getRegistPanelById(panelId);
             if (!panel) {
                 throw new Error("ID为 " + panelId + " 的面板未注册");
             }
-            this.addPanel(panel);
+            this.addPanel(panel,oldSpace);
         }
         /**
          * 添加一个panel，如果面板已经打开则选中该面板并设置焦点
@@ -688,7 +664,7 @@ namespace boxlayout {
          * 根据Id关闭一个面板
          * @param panelId 面板ID
          */
-        public removePanelById(panelId: string): void {
+        public closePanelById(panelId: string): void {
             let panel = this.getRegistPanelById(panelId);
             if (!panel) {
                 throw new Error("ID为 " + panelId + " 的面板未注册");
@@ -697,12 +673,18 @@ namespace boxlayout {
         }
         /**
          * 删除一个面板
-         * @param panel 面板
+         * @param panel 要删除的面板
          */
         public removePanel(panel: ITabPanel): void {
-            if(panel.ownerGroup){
+            let group=panel.ownerGroup;
+            if(group){
+                //缓存面板信息
                 this.cachePanelInfo(panel);
-                panel.ownerGroup.removePanel(panel);
+                group.removePanel(panel);
+                //移除区域
+                if (group.panels.length === 0) {
+                    this.removeBoxElement(group.ownerElement);
+                }
             }
         }
         /**获取所有已打开的面板 */

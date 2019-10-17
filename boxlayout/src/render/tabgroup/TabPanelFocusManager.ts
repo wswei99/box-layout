@@ -22,16 +22,15 @@ namespace boxlayout {
             // if (this._foucsPanel === panel) {
             //     return;
             // }
-            let oldFocusPanel = this._foucsPanel;
-            this._foucsPanel = panel;
-            if (oldFocusPanel&&oldFocusPanel.ownerGroup) {
-                oldFocusPanel.root.className = 'panel';
-                oldFocusPanel.ownerGroup.tabBar.currentItems.forEach(item => {
-                    if (item.panel === oldFocusPanel) {
+            if (this._foucsPanel&&this._foucsPanel.ownerLayout) {
+                this._foucsPanel.root.className = 'panel';
+                this._foucsPanel.ownerGroup.tabBar.currentItems.forEach(item => {
+                    if (item.panel === this._foucsPanel) {
                         item.root.className = item.selected ? 'title-item selected' : 'title-item';
                     }
                 })
             }
+            this._foucsPanel = panel;
             if (this._foucsPanel) {
                 this._foucsPanel.root.focus();
                 this._foucsPanel.ownerGroup.selectedPanel=this._foucsPanel

@@ -22,9 +22,7 @@ namespace boxlayout {
             this.closeBtn = document.createElement('a');
             this.closeBtn.className='title-closebtn';
             this.root.appendChild(this.closeBtn);
-            this.closeBtn.addEventListener('click', () => {
-                this.panel.ownerGroup.$execCommand('close');
-            })
+            this.closeBtn.addEventListener('click',this.closeHandler)
         }
         public minHeight: number = 0;
         public minWidth: number = 0;
@@ -32,9 +30,9 @@ namespace boxlayout {
         public get root(): HTMLElement {
             return this._root;
         }
-        private _panel: ITabPanel;
+        private _panel: TabPanel;
         public set panel(v: ITabPanel) {
-            this._panel = v;
+            this._panel = v as TabPanel;
             this.updateDisplay();
         }
         public get panel(): ITabPanel {
@@ -55,6 +53,20 @@ namespace boxlayout {
         }
         public removeFromParent(): void {
             this.root.remove();
+        }
+        private closeHandler=()=>{
+            if(this._panel.onRemoving()){
+                let group = this.panel.ownerGroup;
+                //删除
+                this.panel.ownerLayout.removePanel(this.panel);
+                //重置焦点
+                if (group.panels.length > 0) {
+                    TabPanelFocusManager.getInstance().focus(group.selectedPanel);
+                }
+                else {
+                    TabPanelFocusManager.getInstance().focus(null);
+                }
+            }
         }
         public updateDisplay(): void {
             this.titleElement.textContent = this._panel.title;

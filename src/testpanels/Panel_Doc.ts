@@ -13,8 +13,9 @@ export class Panel_Doc extends boxlayout.TabPanel {
         });
     }
     private element: HTMLElement;
-    //重写 以实现自定义内容
-    protected renderContent(container: HTMLElement): void {
+    //重写
+    public onCreate(container: HTMLElement): void {
+        super.onCreate(container);
         this.element = document.createElement('div');
         this.element.style.background="#2b2b2b"
         this.element.style.color = "#ffffff";
@@ -27,16 +28,16 @@ export class Panel_Doc extends boxlayout.TabPanel {
         // this.element.style.color="#ffffff";
         // container.appendChild(this.element);
     }
-    //重写 以实现选项卡头部自定义内容
+    //重写
     public getToolsRender(): boxlayout.IRender {
         return this.headerRender;
     }
-    
-    //重写 做相关处理
-    protected resize(newWidth: number, newHeight: number): void {
+    //重写
+    public onResize(width: number, height: number): void {
+        super.onResize(width,height);
         if (this.element) {
-            this.element.style.width = newWidth + 'px';
-            this.element.style.height = newHeight + 'px';
+            this.element.style.width = width + 'px';
+            this.element.style.height = height + 'px';
         }
     }
 }

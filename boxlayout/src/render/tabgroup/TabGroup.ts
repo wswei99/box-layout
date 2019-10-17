@@ -372,7 +372,7 @@ namespace boxlayout {
                             startElement.ownerLayout.removeBoxElement(startElement);
                         }
                         (targetElement.render as TabGroup).addPanel(startPanel);
-                        this.dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_DRAG, startPanel));
+                        (targetElement.render as TabGroup).dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_DRAG, startPanel));
                     }
                     else {
                         if (startElement === targetElement && (startElement.render as TabGroup).panels.length === 1) {
@@ -385,7 +385,7 @@ namespace boxlayout {
                         let newElement: IBoxLayoutElement = new BoxLayoutElement();
                         targetElement.ownerLayout.addBoxElement(targetElement, newElement, dir as Position);
                         (newElement.render as TabGroup).addPanel(startPanel);
-                        this.dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_DRAG, startPanel));
+                        (newElement.render as TabGroup).dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_DRAG, startPanel));
                     }
                     break;
                 case "panel":
@@ -400,30 +400,14 @@ namespace boxlayout {
                             startElement.ownerLayout.removeBoxElement(startElement);
                         }
                         (targetElement.render as TabGroup).addPanelTo(targetPanel, startPanel, dir);
-                        this.dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_DRAG, startPanel));
+                        (targetElement.render as TabGroup).dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_DRAG, startPanel));
                     }
                     else {
                         (targetElement.render as TabGroup).addPanelTo(targetPanel, startPanel, dir);
-                        this.dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_DRAG, startPanel));
+                        (targetElement.render as TabGroup).dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_DRAG, startPanel));
                     }
                     break;
             }
-        }
-        public $execCommand(command: string): void {
-            switch (command) {
-                case 'close':
-                    let targetPanel: ITabPanel = this.panels[this.selectedIndex];
-                    this.removePanelWithEvent(targetPanel);
-                    if (this.panels.length === 0) {
-                        this.ownerElement.ownerLayout.removeBoxElement(this.ownerElement);
-                    }
-                    break;
-            }
-        }
-        private removePanelWithEvent(panel: ITabPanel): void {
-            this.dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_REMOVING, {panel:panel,group:this}));
-            this.removePanel(panel);
-            this.dispatchEvent(new TabGroupEvent(TabGroupEvent.PANEL_REMOVED, {panel:panel,group:this}));
         }
 
         private container: HTMLElement;

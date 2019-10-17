@@ -112,11 +112,13 @@ namespace boxlayout {
             this.container.appendChild(this.root);
             if (this.isFirst) {
                 this.isFirst = false;
-                this.renderContent(this._root);
+                this.onCreate(this._root);
             }
+            this.onAdd();
         }
         public removeFromParent(): void {
             this.root.remove();
+            this.onRemove();
         }
         private bw: number;
         private bh: number;
@@ -126,7 +128,7 @@ namespace boxlayout {
                 this.root.style.height = height + 'px';
                 this.bw = width;
                 this.bh = height;
-                this.resize(width, height);
+                this.onResize(width, height);
             }
             this.root.style.left = x + 'px';
             this.root.style.top = y + 'px';
@@ -138,11 +140,37 @@ namespace boxlayout {
             if (this.ownerGroup)
                 this.ownerGroup.refresh();
         }
-        protected renderContent(container: HTMLElement): void {
-            //子代重写实现自定义内容
+        /**
+         * 首次创建时触发
+         */
+        public onCreate(container: HTMLElement){
+            //子代重写
         }
-        protected resize(newWidth: number, newHeight): void {
-            //子代重写做相关处理
+        /**
+         * 当添加到视图时调用
+         */
+        public onAdd():void {
+            //子代重写
+        }
+        /**
+         * 当删除面板时调用,返回false可取消关闭
+         * - 只有当用户行为下会触发，调用API删除并不会触发
+         */
+        public onRemoving():boolean{
+            return true;
+            //子代重写
+        }
+        /**
+         * 当面板已被删除时调用
+         */
+        public onRemove():void{
+            //子代重写
+        }
+        /**
+         * 当面板尺寸发生改变时调用
+         */
+        protected onResize(width: number, height): void {
+            //子代重写
         }
     }
 }
