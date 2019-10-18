@@ -128,9 +128,11 @@ declare namespace boxlayout {
         /**注册面板(与面板ID相关的api会用到注册信息)*/
         registPanel(panel: ITabPanel): void;
         /**根据ID获取一个已注册的面板 */
-        getRegistPanelById(id: string): ITabPanel;
+        getRegistPanelById(id: string): ITabPanel | null;
+        /**根据ID获取一个已经打开的面板 */
+        getPanelById(id: string): ITabPanel | null;
         /**
-         * 根据Id打开一个面板，如果面板已经打开则选中该面板并设置焦点
+         * 根据ID打开一个面板，如果面板已经打开则选中该面板并设置焦点
          * @param panelId 面板ID
          * @param oldSpace 是否尝试在原来的区域打开，如果布局发生较大的变化可能出现原始位置寻找错误的情况，默认true
          */

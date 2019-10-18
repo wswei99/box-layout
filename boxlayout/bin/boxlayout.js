@@ -675,8 +675,18 @@ var boxlayout;
         BoxLayout.prototype.getRegistPanelById = function (id) {
             return this.panelDic[id];
         };
+        /**根据ID获取一个已经打开的面板 */
+        BoxLayout.prototype.getPanelById = function (id) {
+            var all = this.getAllOpenPanels();
+            for (var _i = 0, all_1 = all; _i < all_1.length; _i++) {
+                var panel = all_1[_i];
+                if (panel.id === id)
+                    return panel;
+            }
+            return null;
+        };
         /**
-         * 根据Id打开一个面板，如果面板已经打开则选中该面板并设置焦点
+         * 根据ID打开一个面板，如果面板已经打开则选中该面板并设置焦点
          * @param panelId 面板ID
          * @param oldSpace 是否尝试在原来的区域打开，如果布局发生较大的变化可能出现原始位置寻找错误的情况，默认true
          */

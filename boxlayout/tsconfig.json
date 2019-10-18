@@ -5,7 +5,7 @@
 		"sourceMap": true,
 		"declaration": true,
 		"stripInternal": true,
-		"outFile": "bin/boxlayout.js"
+		"outFile": "bin/boxlayout.js",
 	},
 	"exclude": [
 		"bin"

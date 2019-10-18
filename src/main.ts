@@ -5,6 +5,7 @@ import { Panel_Doc } from "./testpanels/Panel_Doc";
 onload = () => {
     new Main().start();
 }
+//测试代码
 class Main {
     //默认布局配置信息
     private defaultConfig = { "type": "BoxLayoutContainer", "isVertical": false, "bounds": { "x": 0, "y": 0, "width": 1278, "height": 740 }, "firstElement": { "type": "BoxLayoutElement", "bounds": { "x": 0, "y": 0, "width": 251, "height": 740 }, "render": { "selectedIndex": 0, "panels": [{ "panelID": "Panel_One", "closeable": false }] } }, "secondElement": { "type": "BoxLayoutContainer", "isVertical": true, "bounds": { "x": 252, "y": 0, "width": 1026, "height": 740 }, "firstElement": { "type": "DocumentElement", "bounds": { "x": 252, "y": 0, "width": 1026, "height": 534 } }, "secondElement": { "type": "BoxLayoutElement", "bounds": { "x": 252, "y": 535, "width": 1026, "height": 205 }, "render": { "selectedIndex": 1, "panels": [{ "panelID": "Panel_Two", "closeable": true }, { "panelID": "Panel_Three", "closeable": true }] } } } }
@@ -29,6 +30,7 @@ class Main {
                 }
             }
         );
+        //注册面板（注意：在应用布局配置或添加、打开面板时确保相关面板已经注册）
         this.layout.registPanel(new Panel_One(
             this.testHandler,
             [
@@ -39,7 +41,6 @@ class Main {
                 { id: 'close', label: '关闭 面板-3 (模拟API调用)' },
                 { id: 'close-operate', label: '关闭 面板-3 (模拟关闭按钮)' },
             ]));
-        //注册面板（注意：在应用布局配置或添加、打开面板时确保相关面板已经注册）
         this.layout.registPanel(new Panel_Two());
         this.layout.registPanel(new Panel_Three());
         this.layout.registPanel(new Panel_Doc());
@@ -74,7 +75,7 @@ class Main {
                 this.layout.closePanelById(Panel_Three.ID)
                 break;
             case 'close-operate':
-                let panel = this.layout.getRegistPanelById(Panel_Three.ID) as boxlayout.TabPanel;
+                let panel = this.layout.getPanelById(Panel_Three.ID) as boxlayout.TabPanel;
                 if(panel.onRemoving()){
                     let group = panel.ownerGroup;
                     this.layout.removePanel(panel);
