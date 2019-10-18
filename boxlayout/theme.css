@@ -5,6 +5,7 @@
 
 /**面板标题栏*/
 .title{
+    height: 25px;
     display: flex;
     position: absolute;
     background-color: #3b3b3b;

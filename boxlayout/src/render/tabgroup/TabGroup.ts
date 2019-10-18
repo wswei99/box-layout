@@ -459,7 +459,6 @@ namespace boxlayout {
                     break;
             }
         }
-        private tabBarHeight: number = 25;//选项卡区域的高度
         private bx: number;
         private by: number;
         private bw: number;
@@ -469,13 +468,13 @@ namespace boxlayout {
             this.by = y;
             this.bw = width;
             this.bh = height;
-            this.tabBar.setBounds(x, y, width, this.tabBarHeight);
+            this.tabBar.setBounds(x, y, width);
             this.updatePanelDisplay();
         }
         private updatePanelDisplay(): void {
             for (let i: number = 0; i < this.panels.length; i++) {
                 if (i === this.selectedIndex) {
-                    this.panels[i].setBounds(this.bx, this.by + this.tabBarHeight, this.bw, this.bh - this.tabBarHeight);
+                    this.panels[i].setBounds(this.bx, this.by + this.tabBar.root.offsetHeight, this.bw, this.bh - this.tabBar.root.offsetHeight);
                     break;
                 }
             }

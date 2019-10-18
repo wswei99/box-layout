@@ -76,11 +76,12 @@ namespace boxlayout {
         private bw: number;
         private bh: number;
         public getBounds(): { x: number, y: number, width: number, height: number } {
-            return { x: this.bx, y: this.by, width: this.bw, height: this.bh };
+            return { x: this.bx, y: this.by, width: this.bw, height: this.root.offsetHeight };
         }
-        public setBounds(x: number, y: number, width: number, height: number): void {
+        public setBounds(x: number, y: number, width: number, height?: number): void {
             this.root.style.width = width + 'px';
-            this.root.style.height = height + 'px';
+            //高度通过样式来控制
+            // this.root.style.height = height + 'px';
             this.root.style.left = x + 'px';
             this.root.style.top = y + 'px';
             this.bx = x;

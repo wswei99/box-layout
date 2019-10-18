@@ -21,24 +21,24 @@ export class Panel_Three extends boxlayout.TabPanel {
     //重写 
     public onCreate(container: HTMLElement): void {
         this.element = document.createElement('div');
-        this.element.style.color = "#ffffff";
+        this.element.style.color = "#aaaaaa";
         this.element.style.fontSize = "12px";
         this.element.style.lineHeight = "12px";
         container.appendChild(this.element);
-        this.element.innerText = 'create->';
+        this.element.innerText = 'create -> ';
     }
     //重写
     public onAdd(): void {
-        this.element.innerText += 'add->';
+        this.element.innerText += 'add -> ';
     }
     //重写
     public onRemoving(): boolean {
-        this.element.innerText += 'removing->';
+        this.element.innerText += 'removing -> ';
         // return true;
         return true;
     }
     public onRemove(): void {
-        this.element.innerText += 'remove->';
+        this.element.innerText += 'remove -> ';
     }
     //重写
     public onResize(width: number, height: number): void {

@@ -2538,11 +2538,12 @@ var boxlayout;
             this.root.remove();
         };
         TabBar.prototype.getBounds = function () {
-            return { x: this.bx, y: this.by, width: this.bw, height: this.bh };
+            return { x: this.bx, y: this.by, width: this.bw, height: this.root.offsetHeight };
         };
         TabBar.prototype.setBounds = function (x, y, width, height) {
             this.root.style.width = width + 'px';
-            this.root.style.height = height + 'px';
+            //高度通过样式来控制
+            // this.root.style.height = height + 'px';
             this.root.style.left = x + 'px';
             this.root.style.top = y + 'px';
             this.bx = x;
@@ -2673,7 +2674,6 @@ var boxlayout;
             _this.currentPanels = [];
             //缓存的选中路径
             _this.selectedPath = [];
-            _this.tabBarHeight = 25; //选项卡区域的高度
             _this._tabBar = new boxlayout.TabBar();
             return _this;
         }
@@ -3184,13 +3184,13 @@ var boxlayout;
             this.by = y;
             this.bw = width;
             this.bh = height;
-            this.tabBar.setBounds(x, y, width, this.tabBarHeight);
+            this.tabBar.setBounds(x, y, width);
             this.updatePanelDisplay();
         };
         TabGroup.prototype.updatePanelDisplay = function () {
             for (var i = 0; i < this.panels.length; i++) {
                 if (i === this.selectedIndex) {
-                    this.panels[i].setBounds(this.bx, this.by + this.tabBarHeight, this.bw, this.bh - this.tabBarHeight);
+                    this.panels[i].setBounds(this.bx, this.by + this.tabBar.root.offsetHeight, this.bw, this.bh - this.tabBar.root.offsetHeight);
                     break;
                 }
             }

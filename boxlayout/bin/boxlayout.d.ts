@@ -649,7 +649,7 @@ declare namespace boxlayout {
             width: number;
             height: number;
         };
-        setBounds(x: number, y: number, width: number, height: number): void;
+        setBounds(x: number, y: number, width: number, height?: number): void;
         currentItems: ITitleRender[];
         private reDeployItems;
         private startP;
@@ -712,7 +712,6 @@ declare namespace boxlayout {
         render(container: HTMLElement): void;
         removeFromParent(): void;
         private tabBarEventHandle;
-        private tabBarHeight;
         private bx;
         private by;
         private bw;
