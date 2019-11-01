@@ -1,14 +1,15 @@
-import { Panel_One } from "./testpanels/Panel_One";
-import { Panel_Two } from "./testpanels/Panel_Two";
-import { Panel_Three } from "./testpanels/Panel_Three";
+import { Panel_Test } from "./testpanels/Panel_Test";
+import { Panel } from "./testpanels/Panel";
+import { Panel_LifeCircle } from "./testpanels/Panel_LifeCircle";
 import { Panel_Doc } from "./testpanels/Panel_Doc";
 onload = () => {
     new Main().start();
 }
 //测试代码
 class Main {
-    //默认布局配置信息
-    private defaultConfig = { "type": "BoxLayoutContainer", "isVertical": false, "bounds": { "x": 0, "y": 0, "width": 1278, "height": 740 }, "firstElement": { "type": "BoxLayoutElement", "bounds": { "x": 0, "y": 0, "width": 251, "height": 740 }, "render": { "selectedIndex": 0, "panels": [{ "panelID": "Panel_One", "closeable": false }] } }, "secondElement": { "type": "BoxLayoutContainer", "isVertical": true, "bounds": { "x": 252, "y": 0, "width": 1026, "height": 740 }, "firstElement": { "type": "DocumentElement", "bounds": { "x": 252, "y": 0, "width": 1026, "height": 534 } }, "secondElement": { "type": "BoxLayoutElement", "bounds": { "x": 252, "y": 535, "width": 1026, "height": 205 }, "render": { "selectedIndex": 1, "panels": [{ "panelID": "Panel_Two", "closeable": true }, { "panelID": "Panel_Three", "closeable": true }] } } } }
+    //布局配置
+    private layoutConfig = { "type": "BoxLayoutContainer", "isVertical": false, "bounds": { "x": 0, "y": 0, "width": 1024, "height": 175 }, "firstElement": { "type": "BoxLayoutElement", "bounds": { "x": 0, "y": 0, "width": 255.5, "height": 175 }, "render": { "selectedIndex": 0, "panels": [{ "panelID": "Panel_Test" }] } }, "secondElement": { "type": "BoxLayoutContainer", "isVertical": true, "bounds": { "x": 256.5, "y": 0, "width": 767.5, "height": 175 }, "firstElement": { "type": "DocumentElement", "bounds": { "x": 256.5, "y": 0, "width": 767.5, "height": 49 } }, "secondElement": { "type": "BoxLayoutElement", "bounds": { "x": 256.5, "y": 50, "width": 767.5, "height": 200 }, "render": { "selectedIndex": 1, "panels": [{ "panelID": "Panel" }, { "panelID": "Panel_Three" }] } } } };
+    private layoutConfig_Document={"type":"BoxLayoutElement","bounds":{"x":0,"y":0,"width":770,"height":338},"render":{"selectedIndex":0,"panels":["Panel_Doc"]}};
     private layout: boxlayout.BoxLayout;
     public start() {
         //阻止选择
@@ -31,27 +32,29 @@ class Main {
             }
         );
         //注册面板（注意：在应用布局配置或添加、打开面板时确保相关面板已经注册）
-        this.layout.registPanel(new Panel_One(
+        this.layout.registPanel(new Panel_Test(
             this.testHandler,
             [
                 { id: 'reset', label: '重置布局' },
+                { id: 'console', label: '输出布局信息到控制台' },
                 { id: 'add_doc', label: '在文档区添加一个面板' },
-                { id: 'open', label: '在新位置打开 面板-3' },
-                { id: 'open-old', label: '在原始位置打开 面板-3' },
-                { id: 'close', label: '关闭 面板-3 (模拟API调用)' },
-                { id: 'close-operate', label: '关闭 面板-3 (模拟关闭按钮)' },
+                { id: 'open', label: '在新位置打开 面板-周期测试' },
+                { id: 'open-old', label: '在原始位置打开 面板-周期测试' },
+                { id: 'close', label: '关闭 面板-周期测试 (模拟API调用)' },
+                { id: 'close-operate', label: '关闭 面板-周期测试 (模拟关闭按钮)' },
             ]));
-        this.layout.registPanel(new Panel_Two());
-        this.layout.registPanel(new Panel_Three());
+        this.layout.registPanel(new Panel());
+        this.layout.registPanel(new Panel_LifeCircle());
         this.layout.registPanel(new Panel_Doc());
 
         //应用布局
-        this.layout.applyLayoutConfig(this.defaultConfig);
+        this.layout.applyLayoutConfig(this.layoutConfig);
+        this.layout.getDocumentElement().layout.applyLayoutConfig(this.layoutConfig_Document);
         //--OR--//
         // //添加面板
-        // this.layout.openPanelById(Panel_One.ID)
-        // this.layout.openPanelById(Panel_Two.ID)
-        // this.layout.openPanelById(Panel_Three.ID)
+        // this.layout.openPanelById(Panel.ID);
+        // this.layout.openPanelById(Panel_Test.ID);
+        // this.layout.openPanelById(Panel_LifeCircle.ID);
         // // //添加文元素
         // this.layout.createDocumentElement();
         // this.layout.getDocumentElement().layout.addPanel(new Panel_Doc());
@@ -60,23 +63,23 @@ class Main {
     private testHandler = (type: string): any => {
         switch (type) {
             case 'reset':
-                this.layout.applyLayoutConfig(this.defaultConfig);
+                this.layout.applyLayoutConfig(this.layoutConfig);
                 break;
             case 'add_doc':
                 this.layout.getDocumentElement().layout.addPanel(new Panel_Doc());
                 break;
             case 'open':
-                this.layout.openPanelById(Panel_Three.ID,false)
+                this.layout.openPanelById(Panel_LifeCircle.ID, false)
                 break;
             case 'open-old':
-                this.layout.openPanelById(Panel_Three.ID)
+                this.layout.openPanelById(Panel_LifeCircle.ID)
                 break;
             case 'close':
-                this.layout.closePanelById(Panel_Three.ID)
+                this.layout.closePanelById(Panel_LifeCircle.ID)
                 break;
             case 'close-operate':
-                let panel = this.layout.getPanelById(Panel_Three.ID) as boxlayout.TabPanel;
-                if(panel.onRemoving()){
+                let panel = this.layout.getPanelById(Panel_LifeCircle.ID) as boxlayout.TabPanel;
+                if (panel.onRemoving()) {
                     let group = panel.ownerGroup;
                     this.layout.removePanel(panel);
                     if (group.panels.length > 0) {
@@ -86,6 +89,10 @@ class Main {
                         this.layout.focusManager.focus(null);
                     }
                 }
+                break;
+            case 'console':
+                console.log('布局配置:', JSON.stringify(this.layout.getLayoutConfig()));
+                console.log('文档区布局配置:', JSON.stringify(this.layout.getDocumentElement().layout.getLayoutConfig()))
                 break;
         }
     }
@@ -98,7 +105,7 @@ class CustomDocumentPanelSerialize implements boxlayout.IPanelSerialize {
      * @param panel 需要序列化的面板
      */
     public serialize(ownerLayout: boxlayout.BoxLayout, panel: boxlayout.ITabPanel): any {
-        return panel.title;
+        return panel.id;
     }
     /**
      * 反序列化 在调用布局的 applyLayoutConfig 方法时调用

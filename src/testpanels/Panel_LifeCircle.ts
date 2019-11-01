@@ -1,10 +1,10 @@
-export class Panel_Three extends boxlayout.TabPanel {
+export class Panel_LifeCircle extends boxlayout.TabPanel {
     public static ID = 'Panel_Three';
     private headerRender: HeaderRender;
     constructor() {
         super();
-        this.id = Panel_Three.ID;
-        this.title = '面板-3';
+        this.id = Panel_LifeCircle.ID;
+        this.title = '面板-周期测试';
         this.priorityLevel = 1;
         this.icon = require("../assets/icon.svg");
         this.headerRender = new HeaderRender();

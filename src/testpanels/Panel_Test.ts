@@ -1,12 +1,12 @@
-export class Panel_One extends boxlayout.TabPanel {
-    public static ID='Panel_One';
+export class Panel_Test extends boxlayout.TabPanel {
+    public static ID='Panel_Test';
     private callback:Function;
     private testData:{id:string,label:string}[];
     constructor(callback:(type:string)=>{},testData:{id:string,label:string}[]) {
         super();
         this.testData=testData;
         this.callback=callback;
-        this.id=Panel_One.ID;
+        this.id=Panel_Test.ID;
         this.title='面板-测试';
         this.icon=require("../assets/icon.svg");
         this.minHeight=this.minWidth=200;
