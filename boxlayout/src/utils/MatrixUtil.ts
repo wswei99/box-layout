@@ -28,6 +28,7 @@ namespace boxlayout{
                     matrix.concat(appendMatrix);
                 }
                 if (target.parentElement === target.offsetParent) {
+                    matrix.translate(target.parentElement.clientLeft,target.parentElement.clientTop)
                     matrix.concat(this.getMatrix(target.parentElement));
                 }
                 target = target.parentElement;
