@@ -5,7 +5,6 @@ namespace boxlayout {
      * @author 杨宁
      */
     export class BoxLayoutContainer extends BoxLayoutElement implements IBoxLayoutContainer {
-        private separatorSize: number = 6;
         constructor() {
             super();
             this._separator = new Separator();
@@ -42,7 +41,7 @@ namespace boxlayout {
         //重写
         public get minHeight(): number {
             if (this.isVertical)
-                return this.firstElement.minHeight + this.secondElement.minHeight+this.gap;
+                return this.firstElement.minHeight + this.secondElement.minHeight + this.gap;
             else
                 return Math.max(this.firstElement.minHeight, this.secondElement.minHeight);
         }
@@ -51,7 +50,7 @@ namespace boxlayout {
             if (this.isVertical)
                 return Math.max(this.firstElement.minWidth, this.secondElement.minWidth);
             else
-                return this.firstElement.minWidth + this.secondElement.minWidth+this.gap;
+                return this.firstElement.minWidth + this.secondElement.minWidth + this.gap;
         }
         //重写
         public get render(): IDragRender {
@@ -73,7 +72,15 @@ namespace boxlayout {
             }
             return this.secondElement;
         }
-        private gap: number = 1;
+        private _separatorSize = undefined;
+        private get separatorSize(): number {
+            if (this._separatorSize === undefined)
+                this._separatorSize = Math.max(6, this.gap);
+            return this._separatorSize;
+        }
+        private get gap():number{
+            return this.ownerLayout.config.layoutGap;
+        }
         //重写
         public updateRenderDisplay(): void {
             //如果初始化时为根节点则两个子节点都不存在
@@ -93,7 +100,7 @@ namespace boxlayout {
                 this.secondElement.x = this.x;
                 this.secondElement.y = this.y + this.firstElement.height + this.gap;
 
-                this.separator.setBounds(this.x, this.firstElement.y + this.firstElement.height - this.separatorSize / 2, this.width, this.separatorSize);
+                this.separator.setBounds(this.x, this.firstElement.y + this.firstElement.height + (this.gap - this.separatorSize) / 2, this.width, this.separatorSize);
             }
             else {
                 lockElement.setLayoutSize(Math.max(lockElement.minWidth, Math.min(this.width - stretchElement.minWidth, lockElement.explicitWidth)), this.height);
@@ -104,7 +111,7 @@ namespace boxlayout {
                 this.secondElement.y = this.y;
                 this.secondElement.x = this.x + this.firstElement.width + this.gap;
 
-                this.separator.setBounds(this.firstElement.x + this.firstElement.width - this.separatorSize / 2, this.y, this.separatorSize, this.height);
+                this.separator.setBounds(this.firstElement.x + this.firstElement.width + (this.gap - this.separatorSize) / 2, this.y, this.separatorSize, this.height);
             }
             this.firstElement.updateRenderDisplay();
             this.secondElement.updateRenderDisplay();

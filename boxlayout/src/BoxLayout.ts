@@ -45,22 +45,22 @@ namespace boxlayout {
             titleRenderFactory?: ITitleRenderFactory
             /**面板序列化 */
             panelSerialize?: IPanelSerialize
+            /**布局间隙 */
+            layoutGap?:number
             /**文档区配置 */
             documentConfig?: {
                 /**标题呈现器工厂*/
                 titleRenderFactory?: ITitleRenderFactory
                 /**面板序列化 */
                 panelSerialize?: IPanelSerialize
+                /**布局间隙 */
+                layoutGap?:number
             }
         }): void {
             this._area = document.createElement('div');
             area.appendChild(this._area);
-            this._area.className = 'split-line';
-            this._area.style.position = 'relative';
+            this._area.className = 'box-layout';
             this._area.style.zIndex = '0';
-            this._area.style.overflow = 'hidden';
-            this._area.style.width = '100%';
-            this._area.style.height = '100%';
             HtmlElementResizeHelper.watch(this._area);
             this._area.addEventListener("resize", this.containerResizeHandle);
             this._layoutConfig = new LayoutConfig();

@@ -7,7 +7,7 @@ namespace boxlayout {
             super();
         }
         private _titleRenderFactory: ITitleRenderFactory = new DefaultTitleRenderFactory();
-        /**标题呈现器*/
+        /**标题呈现器（默认：DefaultTitleRenderFactory）**/
         public set titleRenderFactory(v: ITitleRenderFactory) {
             this._titleRenderFactory = v;
         }
@@ -15,12 +15,20 @@ namespace boxlayout {
             return this._titleRenderFactory;
         }
         private _panelSerialize: IPanelSerialize = new DefaultPanelSerialize();
-        /**面板序列化 */
+        /**面板序列化（默认：DefaultPanelSerialize）*/
         public get panelSerialize(): IPanelSerialize {
             return this._panelSerialize;
         }
         public set panelSerialize(v: IPanelSerialize) {
             this._panelSerialize = v;
+        }
+        private _layoutGap=1;
+        /**布局间隙 （默认：1）*/
+        public get layoutGap():number{
+            return this._layoutGap;
+        }
+        public set layoutGap(v:number){
+            this._layoutGap=v;
         }
         private _documentConfig: LayoutConfig;
         /**文档区配置 */

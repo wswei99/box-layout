@@ -44,12 +44,16 @@ declare namespace boxlayout {
             titleRenderFactory?: ITitleRenderFactory;
             /**面板序列化 */
             panelSerialize?: IPanelSerialize;
+            /**布局间隙 */
+            layoutGap?: number;
             /**文档区配置 */
             documentConfig?: {
                 /**标题呈现器工厂*/
                 titleRenderFactory?: ITitleRenderFactory;
                 /**面板序列化 */
                 panelSerialize?: IPanelSerialize;
+                /**布局间隙 */
+                layoutGap?: number;
             };
         }): void;
         /**
@@ -228,7 +232,6 @@ declare namespace boxlayout {
      * @author 杨宁
      */
     class BoxLayoutContainer extends BoxLayoutElement implements IBoxLayoutContainer {
-        private separatorSize;
         constructor();
         protected onOwnerLayoutChange(): void;
         private _isVertical;
@@ -245,7 +248,9 @@ declare namespace boxlayout {
         readonly priorityLevel: number;
         readonly lockElement: IBoxLayoutElement;
         readonly stretchElement: IBoxLayoutElement;
-        private gap;
+        private _separatorSize;
+        private readonly separatorSize;
+        private readonly gap;
         updateRenderDisplay(): void;
     }
 }
@@ -401,11 +406,14 @@ declare namespace boxlayout {
     class LayoutConfig extends boxlayout_event.EventDispatcher {
         constructor();
         private _titleRenderFactory;
-        /**标题呈现器*/
+        /**标题呈现器（默认：DefaultTitleRenderFactory）**/
         titleRenderFactory: ITitleRenderFactory;
         private _panelSerialize;
-        /**面板序列化 */
+        /**面板序列化（默认：DefaultPanelSerialize）*/
         panelSerialize: IPanelSerialize;
+        private _layoutGap;
+        /**布局间隙 （默认：1）*/
+        layoutGap: number;
         private _documentConfig;
         /**文档区配置 */
         documentConfig: LayoutConfig;

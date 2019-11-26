@@ -143,12 +143,8 @@ var boxlayout;
         BoxLayout.prototype.init = function (area, config) {
             this._area = document.createElement('div');
             area.appendChild(this._area);
-            this._area.className = 'split-line';
-            this._area.style.position = 'relative';
+            this._area.className = 'box-layout';
             this._area.style.zIndex = '0';
-            this._area.style.overflow = 'hidden';
-            this._area.style.width = '100%';
-            this._area.style.height = '100%';
             boxlayout.HtmlElementResizeHelper.watch(this._area);
             this._area.addEventListener("resize", this.containerResizeHandle);
             this._layoutConfig = new boxlayout.LayoutConfig();
@@ -1186,9 +1182,8 @@ var boxlayout;
         __extends(BoxLayoutContainer, _super);
         function BoxLayoutContainer() {
             var _this = _super.call(this) || this;
-            _this.separatorSize = 6;
             _this._isVertical = false;
-            _this.gap = 1;
+            _this._separatorSize = undefined;
             _this._separator = new boxlayout.Separator();
             _this._separator.root['__owner'] = _this;
             return _this;
@@ -1291,6 +1286,22 @@ var boxlayout;
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(BoxLayoutContainer.prototype, "separatorSize", {
+            get: function () {
+                if (this._separatorSize === undefined)
+                    this._separatorSize = Math.max(6, this.gap);
+                return this._separatorSize;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(BoxLayoutContainer.prototype, "gap", {
+            get: function () {
+                return this.ownerLayout.config.layoutGap;
+            },
+            enumerable: true,
+            configurable: true
+        });
         //重写
         BoxLayoutContainer.prototype.updateRenderDisplay = function () {
             //如果初始化时为根节点则两个子节点都不存在
@@ -1308,7 +1319,7 @@ var boxlayout;
                 this.firstElement.y = this.y;
                 this.secondElement.x = this.x;
                 this.secondElement.y = this.y + this.firstElement.height + this.gap;
-                this.separator.setBounds(this.x, this.firstElement.y + this.firstElement.height - this.separatorSize / 2, this.width, this.separatorSize);
+                this.separator.setBounds(this.x, this.firstElement.y + this.firstElement.height + (this.gap - this.separatorSize) / 2, this.width, this.separatorSize);
             }
             else {
                 lockElement.setLayoutSize(Math.max(lockElement.minWidth, Math.min(this.width - stretchElement.minWidth, lockElement.explicitWidth)), this.height);
@@ -1317,7 +1328,7 @@ var boxlayout;
                 this.firstElement.y = this.y;
                 this.secondElement.y = this.y;
                 this.secondElement.x = this.x + this.firstElement.width + this.gap;
-                this.separator.setBounds(this.firstElement.x + this.firstElement.width - this.separatorSize / 2, this.y, this.separatorSize, this.height);
+                this.separator.setBounds(this.firstElement.x + this.firstElement.width + (this.gap - this.separatorSize) / 2, this.y, this.separatorSize, this.height);
             }
             this.firstElement.updateRenderDisplay();
             this.secondElement.updateRenderDisplay();
@@ -1625,13 +1636,14 @@ var boxlayout;
             var _this = _super.call(this) || this;
             _this._titleRenderFactory = new boxlayout.DefaultTitleRenderFactory();
             _this._panelSerialize = new boxlayout.DefaultPanelSerialize();
+            _this._layoutGap = 1;
             return _this;
         }
         Object.defineProperty(LayoutConfig.prototype, "titleRenderFactory", {
             get: function () {
                 return this._titleRenderFactory;
             },
-            /**标题呈现器*/
+            /**标题呈现器（默认：DefaultTitleRenderFactory）**/
             set: function (v) {
                 this._titleRenderFactory = v;
             },
@@ -1639,12 +1651,23 @@ var boxlayout;
             configurable: true
         });
         Object.defineProperty(LayoutConfig.prototype, "panelSerialize", {
-            /**面板序列化 */
+            /**面板序列化（默认：DefaultPanelSerialize）*/
             get: function () {
                 return this._panelSerialize;
             },
             set: function (v) {
                 this._panelSerialize = v;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(LayoutConfig.prototype, "layoutGap", {
+            /**布局间隙 （默认：1）*/
+            get: function () {
+                return this._layoutGap;
+            },
+            set: function (v) {
+                this._layoutGap = v;
             },
             enumerable: true,
             configurable: true
@@ -2419,8 +2442,7 @@ var boxlayout;
             this.minHeight = 0;
             this.minWidth = 0;
             this._root = document.createElement('div');
-            this._root.style.position = "absolute";
-            this._root.style.background = 'rgba(255,255,255,0)';
+            this._root.className = 'separator';
             this._root.style.zIndex = '2';
         }
         Object.defineProperty(Separator.prototype, "root", {
@@ -3511,6 +3533,7 @@ var boxlayout;
                     matrix.concat(appendMatrix);
                 }
                 if (target.parentElement === target.offsetParent) {
+                    matrix.translate(target.parentElement.clientLeft, target.parentElement.clientTop);
                     matrix.concat(this.getMatrix(target.parentElement));
                 }
                 target = target.parentElement;

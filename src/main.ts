@@ -24,10 +24,13 @@ class Main {
                 titleRenderFactory: new boxlayout.DefaultTitleRenderFactory(),
                 //面板序列化器
                 panelSerialize: new boxlayout.DefaultPanelSerialize(),
+                //布局间隙
+                layoutGap:1,
                 //文档区配置
                 documentConfig: {
                     titleRenderFactory: new CustomRenderFactory(),
-                    panelSerialize: new CustomDocumentPanelSerialize()
+                    panelSerialize: new CustomDocumentPanelSerialize(),
+                    layoutGap:1
                 }
             }
         );

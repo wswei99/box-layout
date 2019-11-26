@@ -6,8 +6,7 @@ namespace boxlayout{
     export class Separator implements IRender{
         constructor(){
             this._root=document.createElement('div');
-            this._root.style.position="absolute";
-            this._root.style.background='rgba(255,255,255,0)';
+            this._root.className='separator';
             this._root.style.zIndex='2';
         }
         public minHeight:number=0;
