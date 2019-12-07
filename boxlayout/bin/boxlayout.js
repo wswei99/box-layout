@@ -1805,9 +1805,8 @@ var boxlayout;
         Matrix.prototype.rotate = function (angle) {
             angle = +angle;
             if (angle !== 0) {
-                angle = angle / (Math.PI / 180);
-                var u = boxlayout.NumberUtil.cos(angle);
-                var v = boxlayout.NumberUtil.sin(angle);
+                var u = Math.cos(angle);
+                var v = Math.sin(angle);
                 var ta = this.a;
                 var tb = this.b;
                 var tc = this.c;
@@ -1911,9 +1910,8 @@ var boxlayout;
             }
             var self = this;
             if (rotation !== 0) {
-                rotation = rotation / (Math.PI / 180);
-                var u = boxlayout.NumberUtil.cos(rotation);
-                var v = boxlayout.NumberUtil.sin(rotation);
+                var u = Math.cos(rotation);
+                var v = Math.sin(rotation);
                 self.a = u * scaleX;
                 self.b = v * scaleY;
                 self.c = -v * scaleX;
@@ -3675,49 +3673,6 @@ var boxlayout;
         return MatrixUtil;
     }());
     boxlayout.MatrixUtil = MatrixUtil;
-})(boxlayout || (boxlayout = {}));
-var boxlayout;
-(function (boxlayout) {
-    var NumberUtil = /** @class */ (function () {
-        function NumberUtil() {
-        }
-        NumberUtil.sin = function (value) {
-            var valueFloor = Math.floor(value);
-            var valueCeil = valueFloor + 1;
-            var resultFloor = NumberUtil.sinInt(valueFloor);
-            if (valueFloor == value) {
-                return resultFloor;
-            }
-            var resultCeil = NumberUtil.sinInt(valueCeil);
-            return (value - valueFloor) * resultCeil + (valueCeil - value) * resultFloor;
-        };
-        NumberUtil.sinInt = function (value) {
-            value = value % 360;
-            if (value < 0) {
-                value += 360;
-            }
-            return Math.sin(value);
-        };
-        NumberUtil.cos = function (value) {
-            var valueFloor = Math.floor(value);
-            var valueCeil = valueFloor + 1;
-            var resultFloor = NumberUtil.cosInt(valueFloor);
-            if (valueFloor == value) {
-                return resultFloor;
-            }
-            var resultCeil = NumberUtil.cosInt(valueCeil);
-            return (value - valueFloor) * resultCeil + (valueCeil - value) * resultFloor;
-        };
-        NumberUtil.cosInt = function (value) {
-            value = value % 360;
-            if (value < 0) {
-                value += 360;
-            }
-            return Math.cos(value);
-        };
-        return NumberUtil;
-    }());
-    boxlayout.NumberUtil = NumberUtil;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {

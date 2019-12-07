@@ -124,9 +124,8 @@ namespace boxlayout {
         public rotate(angle: number): void {
             angle = +angle;
             if (angle !== 0) {
-                angle = angle / (Math.PI / 180);
-                var u = NumberUtil.cos(angle);
-                var v = NumberUtil.sin(angle);
+                var u = Math.cos(angle);
+                var v = Math.sin(angle);
                 var ta = this.a;
                 var tb = this.b;
                 var tc = this.c;
@@ -233,9 +232,8 @@ namespace boxlayout {
             if (ty === void 0) { ty = 0; }
             var self = this;
             if (rotation !== 0) {
-                rotation = rotation / (Math.PI / 180);
-                var u = NumberUtil.cos(rotation);
-                var v = NumberUtil.sin(rotation);
+                var u = Math.cos(rotation);
+                var v = Math.sin(rotation);
                 self.a = u * scaleX;
                 self.b = v * scaleY;
                 self.c = -v * scaleX;

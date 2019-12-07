@@ -889,14 +889,6 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
-    class NumberUtil {
-        static sin(value: number): number;
-        static sinInt(value: number): number;
-        static cos(value: number): number;
-        static cosInt(value: number): number;
-    }
-}
-declare namespace boxlayout {
     /**
      * 弹出菜单
      * @author 杨宁
