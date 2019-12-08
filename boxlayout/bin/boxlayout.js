@@ -1627,6 +1627,11 @@ var boxlayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {
+    var LayoutMode;
+    (function (LayoutMode) {
+        LayoutMode[LayoutMode["NORMAL"] = 0] = "NORMAL";
+        LayoutMode[LayoutMode["FIXED"] = 1] = "FIXED";
+    })(LayoutMode = boxlayout.LayoutMode || (boxlayout.LayoutMode = {}));
     /**
      * 布局配置文件
      */
@@ -1637,6 +1642,7 @@ var boxlayout;
             _this._titleRenderFactory = new boxlayout.DefaultTitleRenderFactory();
             _this._panelSerialize = new boxlayout.DefaultPanelSerialize();
             _this._layoutGap = 1;
+            _this._mode = LayoutMode.NORMAL;
             return _this;
         }
         Object.defineProperty(LayoutConfig.prototype, "titleRenderFactory", {
@@ -1668,6 +1674,17 @@ var boxlayout;
             },
             set: function (v) {
                 this._layoutGap = v;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(LayoutConfig.prototype, "mode", {
+            /** 布局模式（默认：LayoutMode.NORMAL）*/
+            get: function () {
+                return this._mode;
+            },
+            set: function (v) {
+                this._mode = v;
             },
             enumerable: true,
             configurable: true
@@ -3150,9 +3167,17 @@ var boxlayout;
                     break;
             }
         };
+        Object.defineProperty(TabGroup.prototype, "usetabBar", {
+            get: function () {
+                return this.ownerLayout.config.mode !== boxlayout.LayoutMode.FIXED;
+            },
+            enumerable: true,
+            configurable: true
+        });
         TabGroup.prototype.render = function (container) {
             this.container = container;
-            this.tabBar.render(this.container);
+            if (this.usetabBar)
+                this.tabBar.render(this.container);
             if (this.reDeployPanelTag) {
                 this.reDeployPanelTag = false;
                 this.reDeployPanels();
@@ -3181,7 +3206,7 @@ var boxlayout;
                     this.dispatchEvent(new boxlayout.TabGroupEvent(boxlayout.TabGroupEvent.SELECTCHANGE, this));
                     break;
                 case boxlayout.TabBarEvent.BEGINDRAG:
-                    if (!this.ownerElement.ownerLayout.maxSizeElement) {
+                    if (this.canDrag) {
                         var info = new boxlayout.DragInfo();
                         info.otherData["startElement"] = this.ownerElement;
                         info.otherData["startPanel"] = e.data;
@@ -3198,6 +3223,13 @@ var boxlayout;
                     break;
             }
         };
+        Object.defineProperty(TabGroup.prototype, "canDrag", {
+            get: function () {
+                return !this.ownerElement.ownerLayout.maxSizeElement && this.ownerLayout.config.mode === boxlayout.LayoutMode.NORMAL;
+            },
+            enumerable: true,
+            configurable: true
+        });
         TabGroup.prototype.setBounds = function (x, y, width, height) {
             this.bx = x;
             this.by = y;

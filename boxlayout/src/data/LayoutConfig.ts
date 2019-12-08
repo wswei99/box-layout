@@ -1,4 +1,8 @@
 namespace boxlayout {
+    export enum LayoutMode{
+        NORMAL,
+        FIXED
+    }
     /**
      * 布局配置文件
      */
@@ -29,6 +33,14 @@ namespace boxlayout {
         }
         public set layoutGap(v:number){
             this._layoutGap=v;
+        }
+        private _mode:LayoutMode=LayoutMode.NORMAL;
+        /** 布局模式（默认：LayoutMode.NORMAL）*/
+        public get mode():LayoutMode{
+            return this._mode;
+        }
+        public set mode(v:LayoutMode){
+            this._mode=v;
         }
         private _documentConfig: LayoutConfig;
         /**文档区配置 */

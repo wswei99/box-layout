@@ -409,11 +409,14 @@ namespace boxlayout {
                     break;
             }
         }
-
+        private get usetabBar():boolean{
+            return this.ownerLayout.config.mode!==LayoutMode.FIXED;
+        }
         private container: HTMLElement;
         public render(container: HTMLElement): void {
             this.container = container;
-            this.tabBar.render(this.container);
+            if(this.usetabBar)
+                this.tabBar.render(this.container);
             if (this.reDeployPanelTag) {
                 this.reDeployPanelTag = false;
                 this.reDeployPanels();
@@ -442,7 +445,7 @@ namespace boxlayout {
                     this.dispatchEvent(new TabGroupEvent(TabGroupEvent.SELECTCHANGE,this))
                     break;
                 case TabBarEvent.BEGINDRAG:
-                    if (!this.ownerElement.ownerLayout.maxSizeElement) {
+                    if (this.canDrag) {
                         let info: DragInfo = new DragInfo();
                         info.otherData["startElement"] = this.ownerElement;
                         info.otherData["startPanel"] = e.data as ITabPanel;
@@ -458,6 +461,9 @@ namespace boxlayout {
                     }
                     break;
             }
+        }
+        private get canDrag():boolean{
+            return !this.ownerElement.ownerLayout.maxSizeElement&&this.ownerLayout.config.mode===LayoutMode.NORMAL;
         }
         private bx: number;
         private by: number;

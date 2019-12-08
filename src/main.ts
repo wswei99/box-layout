@@ -9,7 +9,7 @@ onload = () => {
 class Main {
     //布局配置
     private layoutConfig = { "type": "BoxLayoutContainer", "isVertical": false, "bounds": { "x": 0, "y": 0, "width": 1024, "height": 175 }, "firstElement": { "type": "BoxLayoutElement", "bounds": { "x": 0, "y": 0, "width": 255.5, "height": 175 }, "render": { "selectedIndex": 0, "panels": [{ "panelID": "Panel_Test" }] } }, "secondElement": { "type": "BoxLayoutContainer", "isVertical": true, "bounds": { "x": 256.5, "y": 0, "width": 767.5, "height": 175 }, "firstElement": { "type": "DocumentElement", "bounds": { "x": 256.5, "y": 0, "width": 767.5, "height": 49 } }, "secondElement": { "type": "BoxLayoutElement", "bounds": { "x": 256.5, "y": 50, "width": 767.5, "height": 200 }, "render": { "selectedIndex": 1, "panels": [{ "panelID": "Panel" }, { "panelID": "Panel_Three" }] } } } };
-    private layoutConfig_Document={"type":"BoxLayoutElement","bounds":{"x":0,"y":0,"width":770,"height":338},"render":{"selectedIndex":0,"panels":["Panel_Doc"]}};
+    private layoutConfig_Document = { "type": "BoxLayoutElement", "bounds": { "x": 0, "y": 0, "width": 770, "height": 338 }, "render": { "selectedIndex": 0, "panels": ["Panel_Doc"] } };
     private layout: boxlayout.BoxLayout;
     public start() {
         //阻止选择
@@ -24,13 +24,20 @@ class Main {
                 titleRenderFactory: new boxlayout.DefaultTitleRenderFactory(),
                 //面板序列化器
                 panelSerialize: new boxlayout.DefaultPanelSerialize(),
+                //布局模式
+                //* - NORMAL模式：有标题栏，可拖动，可改变尺寸。
+                //* - FIXED模式：无标题栏，不可拖动，可改变尺寸。
+                mode: boxlayout.LayoutMode.NORMAL,//正常布局
+                // mode: boxlayout.LayoutMode.FIXED,//固定布局
                 //布局间隙
-                layoutGap:1,
+                layoutGap: 1,
                 //文档区配置
                 documentConfig: {
                     titleRenderFactory: new CustomRenderFactory(),
                     panelSerialize: new CustomDocumentPanelSerialize(),
-                    layoutGap:1
+                    mode: boxlayout.LayoutMode.NORMAL,//正常布局
+                    // mode: boxlayout.LayoutMode.FIXED,//固定布局
+                    layoutGap: 1
                 }
             }
         );

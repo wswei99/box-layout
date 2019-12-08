@@ -44,6 +44,8 @@ declare namespace boxlayout {
             titleRenderFactory?: ITitleRenderFactory;
             /**面板序列化 */
             panelSerialize?: IPanelSerialize;
+            /**布局模式 */
+            mode?: LayoutMode;
             /**布局间隙 */
             layoutGap?: number;
             /**文档区配置 */
@@ -52,6 +54,8 @@ declare namespace boxlayout {
                 titleRenderFactory?: ITitleRenderFactory;
                 /**面板序列化 */
                 panelSerialize?: IPanelSerialize;
+                /**布局模式 */
+                mode?: LayoutMode;
                 /**布局间隙 */
                 layoutGap?: number;
             };
@@ -400,6 +404,10 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    enum LayoutMode {
+        NORMAL = 0,
+        FIXED = 1
+    }
     /**
      * 布局配置文件
      */
@@ -414,6 +422,9 @@ declare namespace boxlayout {
         private _layoutGap;
         /**布局间隙 （默认：1）*/
         layoutGap: number;
+        private _mode;
+        /** 布局模式（默认：LayoutMode.NORMAL）*/
+        mode: LayoutMode;
         private _documentConfig;
         /**文档区配置 */
         documentConfig: LayoutConfig;
@@ -716,10 +727,12 @@ declare namespace boxlayout {
         private adjustDragInfo_tabBox;
         private adjustDragInfo_tabGroup;
         acceptDragInfo(v: DragInfo): void;
+        private readonly usetabBar;
         private container;
         render(container: HTMLElement): void;
         removeFromParent(): void;
         private tabBarEventHandle;
+        private readonly canDrag;
         private bx;
         private by;
         private bw;

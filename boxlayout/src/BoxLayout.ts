@@ -45,6 +45,8 @@ namespace boxlayout {
             titleRenderFactory?: ITitleRenderFactory
             /**面板序列化 */
             panelSerialize?: IPanelSerialize
+            /**布局模式 */
+            mode?:LayoutMode
             /**布局间隙 */
             layoutGap?:number
             /**文档区配置 */
@@ -53,6 +55,8 @@ namespace boxlayout {
                 titleRenderFactory?: ITitleRenderFactory
                 /**面板序列化 */
                 panelSerialize?: IPanelSerialize
+                /**布局模式 */
+                mode?:LayoutMode
                 /**布局间隙 */
                 layoutGap?:number
             }
