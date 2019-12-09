@@ -30,14 +30,14 @@ class Main {
                 mode: boxlayout.LayoutMode.NORMAL,//正常布局
                 // mode: boxlayout.LayoutMode.FIXED,//固定布局
                 //布局间隙
-                layoutGap: 1,
+                layoutGap: 6,
                 //文档区配置
                 documentConfig: {
                     titleRenderFactory: new CustomRenderFactory(),
                     panelSerialize: new CustomDocumentPanelSerialize(),
                     mode: boxlayout.LayoutMode.NORMAL,//正常布局
                     // mode: boxlayout.LayoutMode.FIXED,//固定布局
-                    layoutGap: 1
+                    layoutGap: 6
                 }
             }
         );
