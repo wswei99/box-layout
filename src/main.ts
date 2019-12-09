@@ -9,15 +9,18 @@ onload = () => {
 class Main {
     //布局配置
     private layoutConfig = { "type": "BoxLayoutContainer", "isVertical": false, "bounds": { "x": 0, "y": 0, "width": 1024, "height": 175 }, "firstElement": { "type": "BoxLayoutElement", "bounds": { "x": 0, "y": 0, "width": 255.5, "height": 175 }, "render": { "selectedIndex": 0, "panels": [{ "panelID": "Panel_Test" }] } }, "secondElement": { "type": "BoxLayoutContainer", "isVertical": true, "bounds": { "x": 256.5, "y": 0, "width": 767.5, "height": 175 }, "firstElement": { "type": "DocumentElement", "bounds": { "x": 256.5, "y": 0, "width": 767.5, "height": 49 } }, "secondElement": { "type": "BoxLayoutElement", "bounds": { "x": 256.5, "y": 50, "width": 767.5, "height": 200 }, "render": { "selectedIndex": 1, "panels": [{ "panelID": "Panel" }, { "panelID": "Panel_Three" }] } } } };
+    //文档区布局配置
     private layoutConfig_Document = { "type": "BoxLayoutElement", "bounds": { "x": 0, "y": 0, "width": 770, "height": 338 }, "render": { "selectedIndex": 0, "panels": ["Panel_Doc"] } };
+    //盒式布局
     private layout: boxlayout.BoxLayout;
     public start() {
         //阻止选择
         document.onselectstart = function () { return false; };
         let container = document.getElementById('container');
-        this.layout = new boxlayout.BoxLayout();
         //初始化布局
+        this.layout = new boxlayout.BoxLayout();
         this.layout.init(
+            //要应用盒式布局的容器
             container,
             {
                 //标题呈现器工厂
@@ -41,7 +44,10 @@ class Main {
                 }
             }
         );
-        //注册面板（注意：在应用布局配置或添加、打开面板时确保相关面板已经注册）
+        //注册面板
+        this.layout.registPanel(new Panel());
+        this.layout.registPanel(new Panel_LifeCircle());
+        this.layout.registPanel(new Panel_Doc());
         this.layout.registPanel(new Panel_Test(
             this.testHandler,
             [
@@ -53,14 +59,11 @@ class Main {
                 { id: 'close', label: '关闭 面板-周期测试 (模拟API调用)' },
                 { id: 'close-operate', label: '关闭 面板-周期测试 (模拟关闭按钮)' },
             ]));
-        this.layout.registPanel(new Panel());
-        this.layout.registPanel(new Panel_LifeCircle());
-        this.layout.registPanel(new Panel_Doc());
 
-        //应用布局
+        //应用布局（注意：在应用布局配置或添加、打开面板时确保相关面板已经注册）
         this.layout.applyLayoutConfig(this.layoutConfig);
         this.layout.getDocumentElement().layout.applyLayoutConfig(this.layoutConfig_Document);
-        //--OR--//
+        /**--OR--**/
         // //添加面板
         // this.layout.openPanelById(Panel.ID);
         // this.layout.openPanelById(Panel_Test.ID);
@@ -137,6 +140,7 @@ class CustomRender extends boxlayout.DefaultTitleRender {
         div.style.height = '15px';
         div.style.borderRadius = '10px';
         div.style.background = '#0000004d';
+        ////---
         // this.root.appendChild(div);
     }
 }
