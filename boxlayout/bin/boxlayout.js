@@ -161,10 +161,15 @@ var boxlayout;
          */
         BoxLayout.prototype.getActiveTabGroup = function () {
             var activeTabGroup = this.focusManager.getActiveGroup(this);
-            if (!activeTabGroup || !activeTabGroup.ownerLayout) {
-                activeTabGroup = this.getFirstElement(this.rootLayoutElement).render;
-            }
-            return activeTabGroup;
+            if (activeTabGroup && activeTabGroup.ownerLayout)
+                return activeTabGroup;
+            var render = this.getFirstElement(this.rootLayoutElement).render;
+            if (render instanceof boxlayout.TabGroup)
+                return render;
+            render = this.getSecondElement(this.rootLayoutElement).render;
+            if (render instanceof boxlayout.TabGroup)
+                return render;
+            return null;
         };
         /**
          * 获取激活的面板

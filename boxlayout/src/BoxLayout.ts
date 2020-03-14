@@ -46,9 +46,9 @@ namespace boxlayout {
             /**面板序列化 */
             panelSerialize?: IPanelSerialize
             /**布局模式 */
-            mode?:LayoutMode
+            mode?: LayoutMode
             /**布局间隙 */
-            layoutGap?:number
+            layoutGap?: number
             /**文档区配置 */
             documentConfig?: {
                 /**标题呈现器工厂*/
@@ -56,9 +56,9 @@ namespace boxlayout {
                 /**面板序列化 */
                 panelSerialize?: IPanelSerialize
                 /**布局模式 */
-                mode?:LayoutMode
+                mode?: LayoutMode
                 /**布局间隙 */
-                layoutGap?:number
+                layoutGap?: number
             }
         }): void {
             this._area = document.createElement('div');
@@ -81,10 +81,15 @@ namespace boxlayout {
          */
         public getActiveTabGroup(): TabGroup {
             let activeTabGroup: TabGroup = this.focusManager.getActiveGroup(this);
-            if (!activeTabGroup || !activeTabGroup.ownerLayout) {
-                activeTabGroup = this.getFirstElement(this.rootLayoutElement).render as TabGroup;
-            }
-            return activeTabGroup;
+            if (activeTabGroup && activeTabGroup.ownerLayout)
+                return activeTabGroup;
+            let render = this.getFirstElement(this.rootLayoutElement).render;
+            if (render instanceof TabGroup)
+                return render;
+            render = this.getSecondElement(this.rootLayoutElement).render;
+            if (render instanceof TabGroup)
+                return render;
+            return null
         }
         /**
          * 获取激活的面板
@@ -117,7 +122,7 @@ namespace boxlayout {
          * @param element 要添加的元素
          * @param position 位置
          */
-        public addBoxElement(target: IBoxLayoutElement, element: IBoxLayoutElement, position: Position = "right", ): void {
+        public addBoxElement(target: IBoxLayoutElement, element: IBoxLayoutElement, position: Position = "right"): void {
             if (target === element || element === this.rootLayoutElement) {
                 return;
             }
@@ -394,7 +399,7 @@ namespace boxlayout {
         ////
         private closePanelInfoCache: any = {};
         private cachePanelInfo(panel: ITabPanel): void {
-            if(panel.ownerGroup&&panel.ownerGroup.ownerLayout){
+            if (panel.ownerGroup && panel.ownerGroup.ownerLayout) {
                 let link: Position[] = [];
                 this.getDirLink(panel.ownerGroup.ownerElement, link);
                 this.closePanelInfoCache[panel.id] = link;
@@ -592,20 +597,20 @@ namespace boxlayout {
         ////
         ////
         ////
-        private panelDic: {[key:string]:ITabPanel} = {};
+        private panelDic: { [key: string]: ITabPanel } = {};
         /**注册面板(与面板ID相关的api会用到注册信息)*/
         public registPanel(panel: ITabPanel): void {
             this.panelDic[panel.id] = panel;
         }
         /**根据ID获取一个已注册的面板 */
-        public getRegistPanelById(id: string): ITabPanel|null {
+        public getRegistPanelById(id: string): ITabPanel | null {
             return this.panelDic[id];
         }
         /**根据ID获取一个已经打开的面板 */
-        public getPanelById(id:string):ITabPanel|null{
-            let all=this.getAllOpenPanels();
-            for(let panel of all)
-                if(panel.id===id)
+        public getPanelById(id: string): ITabPanel | null {
+            let all = this.getAllOpenPanels();
+            for (let panel of all)
+                if (panel.id === id)
                     return panel;
             return null;
         }
@@ -619,7 +624,7 @@ namespace boxlayout {
             if (!panel) {
                 throw new Error("ID为 " + panelId + " 的面板未注册");
             }
-            this.addPanel(panel,oldSpace);
+            this.addPanel(panel, oldSpace);
         }
         /**
          * 添加一个panel，如果面板已经打开则选中该面板并设置焦点
@@ -688,8 +693,8 @@ namespace boxlayout {
          * @param panel 要删除的面板
          */
         public removePanel(panel: ITabPanel): void {
-            let group=panel.ownerGroup;
-            if(group){
+            let group = panel.ownerGroup;
+            if (group) {
                 //缓存面板信息
                 this.cachePanelInfo(panel);
                 group.removePanel(panel);
@@ -880,10 +885,10 @@ namespace boxlayout {
          * @param result 面板
          */
         private getAllPanelByElement(element: IBoxLayoutElement): ITabPanel[] {
-            let resultList:ITabPanel[]=[];
+            let resultList: ITabPanel[] = [];
             if (element instanceof BoxLayoutContainer) {
-                resultList=resultList.concat(this.getAllPanelByElement((element as BoxLayoutContainer).firstElement));
-                resultList=resultList.concat(this.getAllPanelByElement((element as BoxLayoutContainer).secondElement));
+                resultList = resultList.concat(this.getAllPanelByElement((element as BoxLayoutContainer).firstElement));
+                resultList = resultList.concat(this.getAllPanelByElement((element as BoxLayoutContainer).secondElement));
             }
             else if (!(element instanceof DocumentElement)) {
                 let panels = (element.render as TabGroup).panels;
