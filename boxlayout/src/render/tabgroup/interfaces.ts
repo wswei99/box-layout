@@ -8,6 +8,8 @@ namespace boxlayout {
         id: string;
         /**面板标题 */
         title: string;
+        /**是否可拖拽 */
+        draggable:boolean;
         /**所属的容器 */
         ownerGroup:TabGroup;
         /**所属的布局 */

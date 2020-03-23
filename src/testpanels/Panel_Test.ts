@@ -11,6 +11,7 @@ export class Panel_Test extends boxlayout.TabPanel {
         this.icon=require("../assets/icon.svg");
         this.minHeight=this.minWidth=200;
         this.closeable=false;
+        this.draggable=false;
     }
     //重写
     public onCreate(container: HTMLElement): void {

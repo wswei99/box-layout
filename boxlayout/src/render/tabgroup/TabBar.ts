@@ -130,8 +130,10 @@ namespace boxlayout {
                             break;
                         }
                     }
-                    window.addEventListener("mousemove", this.itemEventHandle);
-                    window.addEventListener("mouseup", this.itemEventHandle);
+                    if(this.targetPanel.draggable){
+                        window.addEventListener("mousemove", this.itemEventHandle);
+                        window.addEventListener("mouseup", this.itemEventHandle);
+                    }
                     break;
                 case "mousemove":
                     if (Math.abs(e.clientX - this.startP.x) > 3 || Math.abs(e.clientY - this.startP.y) > 3) {

@@ -43,6 +43,13 @@ namespace boxlayout {
                 this.refresh();
             }
         }
+        private _draggable:boolean=true;
+        public get draggable():boolean{
+            return this._draggable;
+        }
+        public set draggable(v:boolean){
+            this._draggable=v;
+        }
         private _icon: string = "";
         public get icon(): string {
             return this._icon;

@@ -272,6 +272,8 @@ declare namespace boxlayout {
         id: string;
         private _title;
         title: string;
+        private _draggable;
+        draggable: boolean;
         private _icon;
         icon: string;
         private _closeable;
@@ -823,6 +825,8 @@ declare namespace boxlayout {
         id: string;
         /**面板标题 */
         title: string;
+        /**是否可拖拽 */
+        draggable: boolean;
         /**所属的容器 */
         ownerGroup: TabGroup;
         /**所属的布局 */

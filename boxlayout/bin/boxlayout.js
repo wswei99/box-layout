@@ -1354,6 +1354,7 @@ var boxlayout;
             var _this = _super.call(this) || this;
             _this._minWidth = 50;
             _this._minHeight = 50;
+            _this._draggable = true;
             _this._icon = "";
             _this._closeable = true;
             _this._$visible = false;
@@ -1405,6 +1406,16 @@ var boxlayout;
                     this._title = v;
                     this.refresh();
                 }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(TabPanel.prototype, "draggable", {
+            get: function () {
+                return this._draggable;
+            },
+            set: function (v) {
+                this._draggable = v;
             },
             enumerable: true,
             configurable: true
@@ -2630,8 +2641,10 @@ var boxlayout;
                             break;
                         }
                     }
-                    window.addEventListener("mousemove", this.itemEventHandle);
-                    window.addEventListener("mouseup", this.itemEventHandle);
+                    if (this.targetPanel.draggable) {
+                        window.addEventListener("mousemove", this.itemEventHandle);
+                        window.addEventListener("mouseup", this.itemEventHandle);
+                    }
                     break;
                 case "mousemove":
                     if (Math.abs(e.clientX - this.startP.x) > 3 || Math.abs(e.clientY - this.startP.y) > 3) {
