@@ -4,7 +4,7 @@ namespace boxlayout {
     /**
      * @author 杨宁
      */
-    export class TabGroup extends boxlayout_event.EventDispatcher implements IDragRender {
+    export class TabGroup extends EventDispatcher implements IDragRender {
         constructor() {
             super();
             this._tabBar = new TabBar();

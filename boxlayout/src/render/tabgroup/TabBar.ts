@@ -3,7 +3,7 @@ namespace boxlayout {
     /**
      * @author 杨宁
      */
-    export class TabBar extends boxlayout_event.EventDispatcher implements IRender {
+    export class TabBar extends EventDispatcher implements IRender {
         constructor() {
             super();
             this.itemEventHandle = this.itemEventHandle.bind(this);

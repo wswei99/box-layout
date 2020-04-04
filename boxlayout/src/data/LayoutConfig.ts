@@ -6,7 +6,7 @@ namespace boxlayout {
     /**
      * 布局配置文件
      */
-    export class LayoutConfig extends boxlayout_event.EventDispatcher {
+    export class LayoutConfig extends EventDispatcher {
         constructor() {
             super();
         }

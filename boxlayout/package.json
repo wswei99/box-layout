@@ -1,4 +1,9 @@
 {
-  "name": "boxlayout",
-  "version": "1.0.0"
+  "name": "box-layout",
+  "version": "1.0.0",
+  "author": "杨宁",
+  "description": "用于搭建web应用的多面板布局框架",
+  "scripts": {
+    "build":"tsc -p tsconfig.json"
+  }
 }

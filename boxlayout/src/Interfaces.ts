@@ -7,7 +7,7 @@ namespace boxlayout{
         removeFromParent():void;
         setBounds(x:number,y:number,width:number,height:number):void
     }
-    export interface IDragRender extends IRender,boxlayout_event.IEventDispatcher{
+    export interface IDragRender extends IRender,IEventDispatcher{
         ownerElement:IBoxLayoutElement;
         adjustDragInfo(e:MouseEvent,info:DragInfo):boolean;
         acceptDragInfo(info:DragInfo):void;

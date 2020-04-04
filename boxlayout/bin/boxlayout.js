@@ -11,8 +11,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var boxlayout_event;
-(function (boxlayout_event) {
+var boxlayout;
+(function (boxlayout) {
     var EventDispatcher = /** @class */ (function () {
         function EventDispatcher() {
             this.listeners = {};
@@ -74,7 +74,7 @@ var boxlayout_event;
         ;
         return EventDispatcher;
     }());
-    boxlayout_event.EventDispatcher = EventDispatcher;
+    boxlayout.EventDispatcher = EventDispatcher;
     var Event = /** @class */ (function () {
         function Event(type, data) {
             this.$stopPropagation = false;
@@ -86,8 +86,8 @@ var boxlayout_event;
         };
         return Event;
     }());
-    boxlayout_event.Event = Event;
-})(boxlayout_event || (boxlayout_event = {}));
+    boxlayout.Event = Event;
+})(boxlayout || (boxlayout = {}));
 /// <reference path="./data/EventDispatcher.ts" />
 var boxlayout;
 (function (boxlayout) {
@@ -1017,7 +1017,7 @@ var boxlayout;
             return null;
         };
         return BoxLayout;
-    }(boxlayout_event.EventDispatcher));
+    }(boxlayout.EventDispatcher));
     boxlayout.BoxLayout = BoxLayout;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
@@ -1568,7 +1568,7 @@ var boxlayout;
             //子代重写
         };
         return TabPanel;
-    }(boxlayout_event.EventDispatcher));
+    }(boxlayout.EventDispatcher));
     boxlayout.TabPanel = TabPanel;
 })(boxlayout || (boxlayout = {}));
 /// <reference path="./render/tabgroup/TabPanel.ts" />
@@ -1626,7 +1626,7 @@ var boxlayout;
         /**开始拖拽 */
         DragEvent.STARTDRAG = 'dragevent_startdrag';
         return DragEvent;
-    }(boxlayout_event.Event));
+    }(boxlayout.Event));
     boxlayout.DragEvent = DragEvent;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
@@ -1717,7 +1717,7 @@ var boxlayout;
             configurable: true
         });
         return LayoutConfig;
-    }(boxlayout_event.EventDispatcher));
+    }(boxlayout.EventDispatcher));
     boxlayout.LayoutConfig = LayoutConfig;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
@@ -2112,7 +2112,7 @@ var boxlayout;
         /**双击 */
         TabBarEvent.ITEMDOUBLECLICK = 'tabbarevent_itemdoubleclick';
         return TabBarEvent;
-    }(boxlayout_event.Event));
+    }(boxlayout.Event));
     boxlayout.TabBarEvent = TabBarEvent;
 })(boxlayout || (boxlayout = {}));
 /// <reference path="./EventDispatcher.ts" />
@@ -2132,7 +2132,7 @@ var boxlayout;
          */
         TabGroupEvent.PANEL_DRAG = 'paneldrag';
         return TabGroupEvent;
-    }(boxlayout_event.Event));
+    }(boxlayout.Event));
     boxlayout.TabGroupEvent = TabGroupEvent;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
@@ -2143,7 +2143,7 @@ var boxlayout;
             return _super.call(this, type, data) || this;
         }
         return TabPanelEvent;
-    }(boxlayout_event.Event));
+    }(boxlayout.Event));
     boxlayout.TabPanelEvent = TabPanelEvent;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
@@ -2379,7 +2379,7 @@ var boxlayout;
             this.root.style.top = y + 'px';
         };
         return DocumentGroup;
-    }(boxlayout_event.EventDispatcher));
+    }(boxlayout.EventDispatcher));
     boxlayout.DocumentGroup = DocumentGroup;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
@@ -2707,7 +2707,7 @@ var boxlayout;
             }
         };
         return TabBar;
-    }(boxlayout_event.EventDispatcher));
+    }(boxlayout.EventDispatcher));
     boxlayout.TabBar = TabBar;
 })(boxlayout || (boxlayout = {}));
 /// <reference path="../../data/DragInfo.ts" />
@@ -3268,7 +3268,7 @@ var boxlayout;
             //
         };
         return TabGroup;
-    }(boxlayout_event.EventDispatcher));
+    }(boxlayout.EventDispatcher));
     boxlayout.TabGroup = TabGroup;
 })(boxlayout || (boxlayout = {}));
 /// <reference path="../../data/EventDispatcher.ts" />
@@ -3365,7 +3365,7 @@ var boxlayout;
             this.activeGroups = [];
         };
         return TabPanelFocusManager;
-    }(boxlayout_event.EventDispatcher));
+    }(boxlayout.EventDispatcher));
     boxlayout.TabPanelFocusManager = TabPanelFocusManager;
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
@@ -3535,7 +3535,7 @@ var boxlayout;
                 if (target.offsetWidth !== element['w'] || target.offsetHeight !== element['h']) {
                     element['w'] = target.offsetWidth;
                     element['h'] = target.offsetHeight;
-                    target.dispatchEvent(new Event('resize'));
+                    target.dispatchEvent(new window.Event('resize'));
                 }
             });
         };

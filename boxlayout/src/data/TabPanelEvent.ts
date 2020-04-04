@@ -1,5 +1,5 @@
 namespace boxlayout{
-    export class TabPanelEvent extends boxlayout_event.Event{
+    export class TabPanelEvent extends Event{
         constructor(type:string,data?:any){
             super(type,data);
         }

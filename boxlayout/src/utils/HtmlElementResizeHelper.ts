@@ -40,7 +40,7 @@ namespace boxlayout {
 				if (target.offsetWidth !== element['w'] || target.offsetHeight !== element['h']) {
 					element['w'] = target.offsetWidth;
 					element['h'] = target.offsetHeight;
-					target.dispatchEvent(new Event('resize'));
+					target.dispatchEvent(new window.Event('resize'));
 
 				}
 			});

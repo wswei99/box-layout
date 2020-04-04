@@ -3,7 +3,7 @@ namespace boxlayout {
     /**
      * @author 杨宁
      */
-    export class TabPanel extends boxlayout_event.EventDispatcher implements ITabPanel {
+    export class TabPanel extends EventDispatcher implements ITabPanel {
         constructor() {
             super();
             this._root = document.createElement('div');

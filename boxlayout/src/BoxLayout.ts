@@ -13,7 +13,7 @@ namespace boxlayout {
      * 盒式布局
      * @author 杨宁
      */
-    export class BoxLayout extends boxlayout_event.EventDispatcher {
+    export class BoxLayout extends EventDispatcher {
         private dragAreaElement: DragArea;
         private maskElement: Mask;
         constructor() {

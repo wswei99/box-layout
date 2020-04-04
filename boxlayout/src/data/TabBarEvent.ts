@@ -3,7 +3,7 @@ namespace boxlayout{
     /**
      * @author 杨宁
      */
-    export class TabBarEvent extends boxlayout_event.Event{
+    export class TabBarEvent extends Event{
         /**选择改变 */
         public static CHANGE:string='tabbarevent_change';
         /**开始拖拽 */

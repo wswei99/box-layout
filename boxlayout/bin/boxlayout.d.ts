@@ -1,4 +1,4 @@
-declare namespace boxlayout_event {
+declare namespace boxlayout {
     interface IEventDispatcher {
         addEventListener(type: string, fun: Function, thisObj: any): void;
         removeEventListener(type: string, fun: Function, thisObj: any): void;
@@ -25,7 +25,7 @@ declare namespace boxlayout {
      * 盒式布局
      * @author 杨宁
      */
-    class BoxLayout extends boxlayout_event.EventDispatcher {
+    class BoxLayout extends EventDispatcher {
         private dragAreaElement;
         private maskElement;
         constructor();
@@ -262,7 +262,7 @@ declare namespace boxlayout {
     /**
      * @author 杨宁
      */
-    class TabPanel extends boxlayout_event.EventDispatcher implements ITabPanel {
+    class TabPanel extends EventDispatcher implements ITabPanel {
         constructor();
         private _minWidth;
         minWidth: number;
@@ -352,7 +352,7 @@ declare namespace boxlayout {
         removeFromParent(): void;
         setBounds(x: number, y: number, width: number, height: number): void;
     }
-    interface IDragRender extends IRender, boxlayout_event.IEventDispatcher {
+    interface IDragRender extends IRender, IEventDispatcher {
         ownerElement: IBoxLayoutElement;
         adjustDragInfo(e: MouseEvent, info: DragInfo): boolean;
         acceptDragInfo(info: DragInfo): void;
@@ -392,7 +392,7 @@ declare namespace boxlayout {
      * 拖拽事件
      * @author 杨宁
      */
-    class DragEvent extends boxlayout_event.Event {
+    class DragEvent extends Event {
         /**开始拖拽 */
         static STARTDRAG: string;
         constructor(type: string, data?: any);
@@ -413,7 +413,7 @@ declare namespace boxlayout {
     /**
      * 布局配置文件
      */
-    class LayoutConfig extends boxlayout_event.EventDispatcher {
+    class LayoutConfig extends EventDispatcher {
         constructor();
         private _titleRenderFactory;
         /**标题呈现器（默认：DefaultTitleRenderFactory）**/
@@ -515,7 +515,7 @@ declare namespace boxlayout {
     /**
      * @author 杨宁
      */
-    class TabBarEvent extends boxlayout_event.Event {
+    class TabBarEvent extends Event {
         /**选择改变 */
         static CHANGE: string;
         /**开始拖拽 */
@@ -526,7 +526,7 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
-    class TabGroupEvent extends boxlayout_event.Event {
+    class TabGroupEvent extends Event {
         /**
          * data:TabGroup
          */
@@ -539,7 +539,7 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
-    class TabPanelEvent extends boxlayout_event.Event {
+    class TabPanelEvent extends Event {
         constructor(type: string, data?: any);
     }
 }
@@ -562,7 +562,7 @@ declare namespace boxlayout {
      * 文档区视图
      * @author 杨宁
      */
-    class DocumentGroup extends boxlayout_event.EventDispatcher implements IDragRender {
+    class DocumentGroup extends EventDispatcher implements IDragRender {
         private static instance;
         static getInstance(): DocumentGroup;
         constructor();
@@ -642,7 +642,7 @@ declare namespace boxlayout {
     /**
      * @author 杨宁
      */
-    class TabBar extends boxlayout_event.EventDispatcher implements IRender {
+    class TabBar extends EventDispatcher implements IRender {
         constructor();
         minHeight: number;
         minWidth: number;
@@ -687,7 +687,7 @@ declare namespace boxlayout {
     /**
      * @author 杨宁
      */
-    class TabGroup extends boxlayout_event.EventDispatcher implements IDragRender {
+    class TabGroup extends EventDispatcher implements IDragRender {
         constructor();
         minWidth: number;
         minHeight: number;
@@ -749,7 +749,7 @@ declare namespace boxlayout {
      * TabPanel焦点管理器（单例模式）
      * @author 杨宁
      */
-    class TabPanelFocusManager extends boxlayout_event.EventDispatcher {
+    class TabPanelFocusManager extends EventDispatcher {
         private static instance;
         static getInstance(): TabPanelFocusManager;
         private _foucsPanel;
@@ -820,7 +820,7 @@ declare namespace boxlayout {
      * 面板接口
      * @author 杨宁
      */
-    interface ITabPanel extends IRender, boxlayout_event.IEventDispatcher {
+    interface ITabPanel extends IRender, IEventDispatcher {
         /**面板id */
         id: string;
         /**面板标题 */

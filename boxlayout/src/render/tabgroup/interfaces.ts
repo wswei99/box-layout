@@ -3,7 +3,7 @@ namespace boxlayout {
      * 面板接口
      * @author 杨宁
      */
-    export interface ITabPanel extends IRender, boxlayout_event.IEventDispatcher {
+    export interface ITabPanel extends IRender, IEventDispatcher {
         /**面板id */
         id: string;
         /**面板标题 */

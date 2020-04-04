@@ -2,7 +2,7 @@
   "name": "boxlayout_test",
   "version": "1.0.0",
   "scripts": {
-    "build-lib": "cd ./boxlayout && tsc",
+    "build-lib": "cd ./boxlayout && npm run build",
     "build": "npm run build-lib && webpack --config webpack.config.js --mode=development"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 /// <reference path="./EventDispatcher.ts" />
 namespace boxlayout{
-    export class TabGroupEvent extends boxlayout_event.Event{
+    export class TabGroupEvent extends Event{
         /**
          * data:TabGroup
          */

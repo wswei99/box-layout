@@ -1,4 +1,4 @@
-namespace boxlayout_event{
+namespace boxlayout{
     export interface IEventDispatcher{
         addEventListener(type:string, fun:Function, thisObj: any): void;
         removeEventListener(type:string, fun:Function, thisObj:any): void;
